@@ -32,11 +32,41 @@ def avg_views() -> Stat[float]:
 def recent_posts() -> Table:
     return Table(
         data=[
-            {"id": 58741, "title": "Getting Started with FastAPI", "author": "Alice Johnson", "views": 1204, "published": "2026-05-30"},
-            {"id": 58740, "title": "10 Tips for Better Python Code", "author": "Bob Smith", "views": 876, "published": "2026-05-29"},
-            {"id": 58739, "title": "Why Open Source Matters", "author": "Eva Martinez", "views": 654, "published": "2026-05-29"},
-            {"id": 58738, "title": "Building Admin Panels Fast", "author": "Alice Johnson", "views": 3201, "published": "2026-05-28"},
-            {"id": 58737, "title": "Async Python Deep Dive", "author": "Grace Kim", "views": 987, "published": "2026-05-27"},
+            {
+                "id": 58741,
+                "title": "Getting Started with FastAPI",
+                "author": "Alice Johnson",
+                "views": 1204,
+                "published": "2026-05-30",
+            },
+            {
+                "id": 58740,
+                "title": "10 Tips for Better Python Code",
+                "author": "Bob Smith",
+                "views": 876,
+                "published": "2026-05-29",
+            },
+            {
+                "id": 58739,
+                "title": "Why Open Source Matters",
+                "author": "Eva Martinez",
+                "views": 654,
+                "published": "2026-05-29",
+            },
+            {
+                "id": 58738,
+                "title": "Building Admin Panels Fast",
+                "author": "Alice Johnson",
+                "views": 3201,
+                "published": "2026-05-28",
+            },
+            {
+                "id": 58737,
+                "title": "Async Python Deep Dive",
+                "author": "Grace Kim",
+                "views": 987,
+                "published": "2026-05-27",
+            },
         ]
     )
 
@@ -45,11 +75,41 @@ def recent_posts() -> Table:
 def top_posts() -> Table:
     return Table(
         data=[
-            {"rank": 1, "title": "The Ultimate Python Guide", "author": "Alice Johnson", "views": 98_432, "category": "tutorial"},
-            {"rank": 2, "title": "FastAPI vs Flask: Full Comparison", "author": "Bob Smith", "views": 74_211, "category": "comparison"},
-            {"rank": 3, "title": "Docker for Beginners", "author": "Carol White", "views": 61_887, "category": "devops"},
-            {"rank": 4, "title": "Building REST APIs in Python", "author": "Eva Martinez", "views": 54_320, "category": "tutorial"},
-            {"rank": 5, "title": "Understanding Async/Await", "author": "Grace Kim", "views": 48_109, "category": "python"},
+            {
+                "rank": 1,
+                "title": "The Ultimate Python Guide",
+                "author": "Alice Johnson",
+                "views": 98_432,
+                "category": "tutorial",
+            },
+            {
+                "rank": 2,
+                "title": "FastAPI vs Flask: Full Comparison",
+                "author": "Bob Smith",
+                "views": 74_211,
+                "category": "comparison",
+            },
+            {
+                "rank": 3,
+                "title": "Docker for Beginners",
+                "author": "Carol White",
+                "views": 61_887,
+                "category": "devops",
+            },
+            {
+                "rank": 4,
+                "title": "Building REST APIs in Python",
+                "author": "Eva Martinez",
+                "views": 54_320,
+                "category": "tutorial",
+            },
+            {
+                "rank": 5,
+                "title": "Understanding Async/Await",
+                "author": "Grace Kim",
+                "views": 48_109,
+                "category": "python",
+            },
         ]
     )
 
@@ -58,11 +118,36 @@ def top_posts() -> Table:
 def posts_by_category() -> Table:
     return Table(
         data=[
-            {"category": "tutorial", "count": 18420, "total_views": 1_820_340, "avg_views": 98.8},
-            {"category": "news", "count": 12301, "total_views": 980_102, "avg_views": 79.7},
-            {"category": "opinion", "count": 9874, "total_views": 742_800, "avg_views": 75.2},
-            {"category": "devops", "count": 7643, "total_views": 620_441, "avg_views": 81.2},
-            {"category": "comparison", "count": 3971, "total_views": 656_430, "avg_views": 165.3},
+            {
+                "category": "tutorial",
+                "count": 18420,
+                "total_views": 1_820_340,
+                "avg_views": 98.8,
+            },
+            {
+                "category": "news",
+                "count": 12301,
+                "total_views": 980_102,
+                "avg_views": 79.7,
+            },
+            {
+                "category": "opinion",
+                "count": 9874,
+                "total_views": 742_800,
+                "avg_views": 75.2,
+            },
+            {
+                "category": "devops",
+                "count": 7643,
+                "total_views": 620_441,
+                "avg_views": 81.2,
+            },
+            {
+                "category": "comparison",
+                "count": 3971,
+                "total_views": 656_430,
+                "avg_views": 165.3,
+            },
         ]
     )
 
@@ -71,11 +156,41 @@ def posts_by_category() -> Table:
 def pending_review() -> Table:
     return Table(
         data=[
-            {"id": 58742, "title": "My Controversial Take on AI", "author": "Hank Davis", "submitted": "2026-05-30", "flag": "ai-content"},
-            {"id": 58743, "title": "Crypto Will Rule the World", "author": "Jake Wilson", "submitted": "2026-05-30", "flag": "misinformation"},
-            {"id": 58744, "title": "Anonymous Post #1", "author": "Unknown User", "submitted": "2026-05-29", "flag": "spam"},
-            {"id": 58745, "title": "Review: Product X", "author": "Ivy Chen", "submitted": "2026-05-29", "flag": "promotional"},
-            {"id": 58746, "title": "How to Hack Anything", "author": "Bad Actor", "submitted": "2026-05-28", "flag": "policy-violation"},
+            {
+                "id": 58742,
+                "title": "My Controversial Take on AI",
+                "author": "Hank Davis",
+                "submitted": "2026-05-30",
+                "flag": "ai-content",
+            },
+            {
+                "id": 58743,
+                "title": "Crypto Will Rule the World",
+                "author": "Jake Wilson",
+                "submitted": "2026-05-30",
+                "flag": "misinformation",
+            },
+            {
+                "id": 58744,
+                "title": "Anonymous Post #1",
+                "author": "Unknown User",
+                "submitted": "2026-05-29",
+                "flag": "spam",
+            },
+            {
+                "id": 58745,
+                "title": "Review: Product X",
+                "author": "Ivy Chen",
+                "submitted": "2026-05-29",
+                "flag": "promotional",
+            },
+            {
+                "id": 58746,
+                "title": "How to Hack Anything",
+                "author": "Bad Actor",
+                "submitted": "2026-05-28",
+                "flag": "policy-violation",
+            },
         ]
     )
 
@@ -84,10 +199,40 @@ def pending_review() -> Table:
 def deleted_posts() -> Table:
     return Table(
         data=[
-            {"id": 58200, "title": "Old Announcement", "author": "Admin", "deleted_on": "2026-05-25", "reason": "outdated"},
-            {"id": 57940, "title": "Spam Link Farm", "author": "Spam Bot 1", "deleted_on": "2026-05-22", "reason": "spam"},
-            {"id": 57801, "title": "Duplicate Tutorial", "author": "Bob Smith", "deleted_on": "2026-05-20", "reason": "duplicate"},
-            {"id": 57654, "title": "Hate Speech Post", "author": "Troll Account", "deleted_on": "2026-05-18", "reason": "policy-violation"},
-            {"id": 57500, "title": "Test Post 999", "author": "Dev Team", "deleted_on": "2026-05-15", "reason": "test-content"},
+            {
+                "id": 58200,
+                "title": "Old Announcement",
+                "author": "Admin",
+                "deleted_on": "2026-05-25",
+                "reason": "outdated",
+            },
+            {
+                "id": 57940,
+                "title": "Spam Link Farm",
+                "author": "Spam Bot 1",
+                "deleted_on": "2026-05-22",
+                "reason": "spam",
+            },
+            {
+                "id": 57801,
+                "title": "Duplicate Tutorial",
+                "author": "Bob Smith",
+                "deleted_on": "2026-05-20",
+                "reason": "duplicate",
+            },
+            {
+                "id": 57654,
+                "title": "Hate Speech Post",
+                "author": "Troll Account",
+                "deleted_on": "2026-05-18",
+                "reason": "policy-violation",
+            },
+            {
+                "id": 57500,
+                "title": "Test Post 999",
+                "author": "Dev Team",
+                "deleted_on": "2026-05-15",
+                "reason": "test-content",
+            },
         ]
     )
