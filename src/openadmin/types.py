@@ -1,6 +1,6 @@
-from typing import Dict, List, Literal
+from typing import Any, Dict, List, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 
 class Stat(BaseModel):
@@ -14,5 +14,24 @@ class Action(BaseModel):
     body: dict
 
 
+class TableRow(BaseModel):
+    model_config = {"extra": "allow", "populate_by_name": True}
+
+    actions: List[Action] = Field(
+        default=[],
+        alias="__actions__",
+        serialization_alias="__actions__",
+    )
+
+
 class Table(BaseModel):
-    data: List[Dict[str | Literal["__actions__"], str | bool | int | float | Action]]
+    data: List[TableRow | Dict[str, Any]] = Field(default=[])
+
+    @model_validator(mode="after")
+    def coerce_rows(self) -> Table:
+        """Coerce raw dicts into TableRow at runtime."""
+        self.data = [
+            TableRow.model_validate(row) if isinstance(row, dict) else row
+            for row in self.data
+        ]
+        return self
