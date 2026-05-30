@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Literal
 
+from fastapi import Query
 from pydantic import BaseModel, Field, model_validator
 
 
@@ -35,3 +36,8 @@ class Table(BaseModel):
             for row in self.data
         ]
         return self
+
+
+class PaginationParams(BaseModel):
+    page: int = Query(ge=0, description="Page number")
+    per_page: int = Query(ge=1, description="Number of items per page")

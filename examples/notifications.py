@@ -1,7 +1,11 @@
 import asyncio
 import random
 
-from openadmin import AdminPage, Stat, Table
+from fastapi import HTTPException, Request
+
+from openadmin import AdminPage, PaginationParamsDep, Stat, Table
+
+from . import db
 
 page = AdminPage("Notifications")
 
@@ -56,7 +60,7 @@ async def open_rate() -> Stat:
 @page.stat("Opted-Out Users", description="Users who disabled all notifications")
 async def opted_out() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Stat(value=2_840)
+    return Stat(value=len(db.opt_outs))
 
 
 @page.stat(
@@ -67,44 +71,46 @@ async def failed_deliveries() -> Stat:
     return Stat(value=320)
 
 
+@page.action_delete("Delete notification", description="Remove a broadcast notification record")
+async def delete_notification(id: int) -> None:
+    if id not in db.notifications:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    db.notifications.pop(id)
+
+
+@page.action_delete("Remove opt-out", description="Re-subscribe a user who opted out")
+async def remove_opt_out(id: int) -> None:
+    if id not in db.opt_outs:
+        raise HTTPException(status_code=404, detail="Opt-out record not found")
+    db.opt_outs.pop(id)
+
+
 @page.table(
     "Recent Broadcasts",
     description="Latest notifications sent to all or large user segments",
 )
-async def recent_broadcasts() -> Table:
+async def recent_broadcasts(req: Request, pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "title": "New feature: Dark Mode",
-                "recipients": 14_200,
-                "channel": "push",
-                "open_rate": "24.8%",
-                "date": "2026-05-30",
-            },
-            {
-                "title": "Your weekly summary is ready",
-                "recipients": 12_800,
-                "channel": "in-app",
-                "open_rate": "41.2%",
-                "date": "2026-05-29",
-            },
-            {
-                "title": "Scheduled maintenance tonight",
-                "recipients": 14_382,
-                "channel": "push",
-                "open_rate": "32.1%",
-                "date": "2026-05-28",
-            },
-            {
-                "title": "You have unread messages",
-                "recipients": 8_400,
-                "channel": "email",
-                "open_rate": "19.4%",
-                "date": "2026-05-27",
-            },
-        ]
-    )
+    rows = sorted(db.notifications.values(), key=lambda n: n["date"], reverse=True)
+    start = pagination.page * pagination.per_page
+    page_rows = rows[start : start + pagination.per_page]
+    return Table(data=[
+        {
+            "title": n["title"],
+            "recipients": n["recipients"],
+            "channel": n["channel"],
+            "open_rate": n["open_rate"],
+            "date": n["date"],
+            "__actions__": [
+                {
+                    "color": "danger",
+                    "method": "DELETE",
+                    "url": str(req.url_for(delete_notification.__name__)) + f"?id={n['id']}",
+                }
+            ],
+        }
+        for n in page_rows
+    ])
 
 
 @page.table(
@@ -114,27 +120,9 @@ async def delivery_failures() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {
-                "user": "user#8810",
-                "channel": "push",
-                "reason": "token expired",
-                "notification": "New feature: Dark Mode",
-                "date": "2026-05-30",
-            },
-            {
-                "user": "user#4221",
-                "channel": "push",
-                "reason": "device unregistered",
-                "notification": "New feature: Dark Mode",
-                "date": "2026-05-30",
-            },
-            {
-                "user": "user#1090",
-                "channel": "email",
-                "reason": "invalid address",
-                "notification": "Weekly summary",
-                "date": "2026-05-29",
-            },
+            {"user": "user#8810", "channel": "push", "reason": "token expired", "notification": "New Feature: Dark Mode", "date": "2026-05-30"},
+            {"user": "user#4221", "channel": "push", "reason": "device unregistered", "notification": "New Feature: Dark Mode", "date": "2026-05-30"},
+            {"user": "user#1090", "channel": "email", "reason": "invalid address", "notification": "Weekly summary", "date": "2026-05-29"},
         ]
     )
 
@@ -158,18 +146,39 @@ async def opt_out_trends() -> Table:
 
 
 @page.table(
+    "Recent Opt-Outs", description="Users who recently disabled notifications"
+)
+async def recent_opt_outs(req: Request, pagination: PaginationParamsDep) -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    rows = sorted(db.opt_outs.values(), key=lambda o: o["date"], reverse=True)
+    start = pagination.page * pagination.per_page
+    page_rows = rows[start : start + pagination.per_page]
+    return Table(data=[
+        {
+            "user": o["user"],
+            "channel": o["channel"],
+            "reason": o["reason"],
+            "date": o["date"],
+            "__actions__": [
+                {
+                    "color": "warning",
+                    "method": "DELETE",
+                    "url": str(req.url_for(remove_opt_out.__name__)) + f"?id={o['id']}",
+                }
+            ],
+        }
+        for o in page_rows
+    ])
+
+
+@page.table(
     "Notification Preferences", description="Breakdown of user channel preferences"
 )
 async def channel_preferences() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {
-                "channel": "in-app",
-                "enabled": 12_840,
-                "disabled": 1_542,
-                "rate": "89.3%",
-            },
+            {"channel": "in-app", "enabled": 12_840, "disabled": 1_542, "rate": "89.3%"},
             {"channel": "push", "enabled": 9_210, "disabled": 5_172, "rate": "64.0%"},
             {"channel": "email", "enabled": 11_400, "disabled": 2_982, "rate": "79.3%"},
             {"channel": "sms", "enabled": 3_820, "disabled": 10_562, "rate": "26.6%"},

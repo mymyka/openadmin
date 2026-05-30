@@ -1,7 +1,11 @@
 import asyncio
 import random
 
-from openadmin import AdminPage, Stat, Table
+from fastapi import HTTPException, Request
+
+from openadmin import AdminPage, PaginationParamsDep, Stat, Table
+
+from . import db
 
 page = AdminPage("Emails")
 
@@ -65,7 +69,7 @@ async def click_rate() -> Stat:
 @page.stat("Bounced", description="Emails that failed delivery today")
 async def bounced() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Stat(value=182)
+    return Stat(value=len(db.email_bounces))
 
 
 @page.stat("Unsubscribes Today", description="Users who opted out in the last 24 hours")
@@ -74,103 +78,91 @@ async def unsubscribes_today() -> Stat:
     return Stat(value=34)
 
 
+@page.action_delete("Cancel campaign", description="Cancel a scheduled campaign")
+async def cancel_campaign(id: int) -> None:
+    if id not in db.email_campaigns:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    if db.email_campaigns[id]["status"] == "sent":
+        raise HTTPException(status_code=400, detail="Cannot cancel a campaign that has already been sent")
+    db.email_campaigns.pop(id)
+
+
+@page.action_delete("Remove bounce", description="Remove an address from the bounce list")
+async def remove_bounce(id: int) -> None:
+    if id not in db.email_bounces:
+        raise HTTPException(status_code=404, detail="Bounce record not found")
+    db.email_bounces.pop(id)
+
+
 @page.table("Recent Campaigns", description="Last email campaigns sent")
-async def recent_campaigns() -> Table:
+async def recent_campaigns(pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "campaign": "May Product Update",
-                "sent": 18_400,
-                "open_rate": "31.2%",
-                "click_rate": "5.8%",
-                "date": "2026-05-28",
-            },
-            {
-                "campaign": "Re-engagement: Inactive Users",
-                "sent": 4_200,
-                "open_rate": "18.7%",
-                "click_rate": "2.4%",
-                "date": "2026-05-25",
-            },
-            {
-                "campaign": "Weekly Digest #21",
-                "sent": 12_800,
-                "open_rate": "29.4%",
-                "click_rate": "4.2%",
-                "date": "2026-05-24",
-            },
-            {
-                "campaign": "Feature Announcement: Exports",
-                "sent": 22_100,
-                "open_rate": "34.8%",
-                "click_rate": "8.1%",
-                "date": "2026-05-20",
-            },
-        ]
+    rows = sorted(
+        [c for c in db.email_campaigns.values() if c["status"] == "sent"],
+        key=lambda c: c["date"],
+        reverse=True,
     )
+    start = pagination.page * pagination.per_page
+    page_rows = rows[start : start + pagination.per_page]
+    return Table(data=[
+        {
+            "campaign": c["campaign"],
+            "sent": c["sent"],
+            "open_rate": c["open_rate"],
+            "click_rate": c["click_rate"],
+            "date": c["date"],
+        }
+        for c in page_rows
+    ])
 
 
 @page.table("Delivery Failures", description="Emails that bounced or failed recently")
-async def delivery_failures() -> Table:
+async def delivery_failures(req: Request, pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "email": "old@deactivated.com",
-                "type": "hard-bounce",
-                "campaign": "May Product Update",
-                "date": "2026-05-28",
-            },
-            {
-                "email": "full@inbox.net",
-                "type": "soft-bounce",
-                "campaign": "May Product Update",
-                "date": "2026-05-28",
-            },
-            {
-                "email": "noreply@block.org",
-                "type": "blocked",
-                "campaign": "Weekly Digest #21",
-                "date": "2026-05-24",
-            },
-            {
-                "email": "typo@@example.com",
-                "type": "invalid",
-                "campaign": "May Product Update",
-                "date": "2026-05-28",
-            },
-        ]
-    )
+    rows = list(db.email_bounces.values())
+    start = pagination.page * pagination.per_page
+    return Table(data=[
+        {
+            "email": b["email"],
+            "type": b["type"],
+            "campaign": b["campaign"],
+            "date": b["date"],
+            "__actions__": [
+                {
+                    "color": "danger",
+                    "method": "DELETE",
+                    "url": str(req.url_for(remove_bounce.__name__)) + f"?id={b['id']}",
+                }
+            ],
+        }
+        for b in rows[start : start + pagination.per_page]
+    ])
 
 
 @page.table(
     "Scheduled Campaigns", description="Upcoming email campaigns queued for delivery"
 )
-async def scheduled_campaigns() -> Table:
+async def scheduled_campaigns(req: Request, pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "campaign": "June Newsletter",
-                "recipients": 21_400,
-                "scheduled": "2026-06-01 09:00",
-                "status": "queued",
-            },
-            {
-                "campaign": "Promo: Summer Sale",
-                "recipients": 18_900,
-                "scheduled": "2026-06-05 10:00",
-                "status": "draft",
-            },
-            {
-                "campaign": "Onboarding Day 7",
-                "recipients": 840,
-                "scheduled": "2026-06-02 08:00",
-                "status": "queued",
-            },
-        ]
-    )
+    rows = [c for c in db.email_campaigns.values() if c["status"] == "scheduled"]
+    start = pagination.page * pagination.per_page
+    page_rows = rows[start : start + pagination.per_page]
+    return Table(data=[
+        {
+            "campaign": c["campaign"],
+            "recipients": c["recipients"],
+            "scheduled": c["scheduled"],
+            "status": c["status"],
+            "__actions__": [
+                {
+                    "color": "danger",
+                    "method": "DELETE",
+                    "url": str(req.url_for(cancel_campaign.__name__)) + f"?id={c['id']}",
+                }
+            ],
+        }
+        for c in page_rows
+    ])
 
 
 @page.table(
@@ -181,29 +173,9 @@ async def top_links() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {
-                "url": "/pricing",
-                "clicks": 4_820,
-                "campaign": "Feature Announcement: Exports",
-                "ctr": "21.8%",
-            },
-            {
-                "url": "/blog/new-exports",
-                "clicks": 3_210,
-                "campaign": "Feature Announcement: Exports",
-                "ctr": "14.5%",
-            },
-            {
-                "url": "/changelog",
-                "clicks": 2_108,
-                "campaign": "May Product Update",
-                "ctr": "11.4%",
-            },
-            {
-                "url": "/dashboard",
-                "clicks": 1_840,
-                "campaign": "Weekly Digest #21",
-                "ctr": "14.4%",
-            },
+            {"url": "/pricing", "clicks": 4_820, "campaign": "Feature Announcement: Exports", "ctr": "21.8%"},
+            {"url": "/blog/new-exports", "clicks": 3_210, "campaign": "Feature Announcement: Exports", "ctr": "14.5%"},
+            {"url": "/changelog", "clicks": 2_108, "campaign": "May Product Update", "ctr": "11.4%"},
+            {"url": "/dashboard", "clicks": 1_840, "campaign": "Weekly Digest #21", "ctr": "14.4%"},
         ]
     )

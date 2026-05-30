@@ -1,7 +1,11 @@
 import asyncio
 import random
 
-from openadmin import AdminPage, Stat, Table
+from fastapi import HTTPException, Request
+
+from openadmin import AdminPage, PaginationParamsDep, Stat, Table
+
+from . import db
 
 page = AdminPage("Permissions")
 
@@ -48,19 +52,41 @@ All role changes are logged with the granting admin's identity and timestamp. Ro
 @page.stat("Total Roles", description="Defined roles in the system")
 async def total_roles() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Stat(value=8)
+    return Stat(value=len(db.roles))
 
 
 @page.stat("Admin Users", description="Users with admin-level access")
 async def admin_users() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Stat(value=14)
+    return Stat(value=db.roles.get("admin", {}).get("users", 0) + db.roles.get("superadmin", {}).get("users", 0))
 
 
 @page.stat("Pending Access Requests", description="Unreviewed role upgrade requests")
 async def pending_requests() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Stat(value=5)
+    return Stat(value=len(db.role_requests))
+
+
+@page.action_post("Approve request", description="Grant the requested role to the user")
+async def approve_request(id: int) -> None:
+    if id not in db.role_requests:
+        raise HTTPException(status_code=404, detail="Request not found")
+    req = db.role_requests.pop(id)
+    change_id = db.next_id("role_changes")
+    db.role_changes[change_id] = {
+        "id": change_id,
+        "user": req["user"],
+        "change": f"{req['current_role']} → {req['requested_role']}",
+        "changed_by": "admin",
+        "date": "2026-05-30",
+    }
+
+
+@page.action_delete("Deny request", description="Reject a role upgrade request")
+async def deny_request(id: int) -> None:
+    if id not in db.role_requests:
+        raise HTTPException(status_code=404, detail="Request not found")
+    db.role_requests.pop(id)
 
 
 @page.table(
@@ -68,66 +94,7 @@ async def pending_requests() -> Stat:
 )
 async def role_overview() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "role": "superadmin",
-                "users": 2,
-                "can_delete": True,
-                "can_ban": True,
-                "can_export": True,
-            },
-            {
-                "role": "admin",
-                "users": 12,
-                "can_delete": True,
-                "can_ban": True,
-                "can_export": True,
-            },
-            {
-                "role": "moderator",
-                "users": 34,
-                "can_delete": True,
-                "can_ban": False,
-                "can_export": False,
-            },
-            {
-                "role": "analyst",
-                "users": 18,
-                "can_delete": False,
-                "can_ban": False,
-                "can_export": True,
-            },
-            {
-                "role": "support",
-                "users": 42,
-                "can_delete": False,
-                "can_ban": False,
-                "can_export": False,
-            },
-            {
-                "role": "editor",
-                "users": 210,
-                "can_delete": False,
-                "can_ban": False,
-                "can_export": False,
-            },
-            {
-                "role": "member",
-                "users": 13_940,
-                "can_delete": False,
-                "can_ban": False,
-                "can_export": False,
-            },
-            {
-                "role": "guest",
-                "users": 120,
-                "can_delete": False,
-                "can_ban": False,
-                "can_export": False,
-            },
-        ]
-    )
+    return Table(data=list(db.roles.values()))
 
 
 @page.table("Admin Users", description="All users with admin-level privileges")
@@ -135,36 +102,11 @@ async def admin_users_list() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {
-                "user": "superadmin@platform.com",
-                "role": "superadmin",
-                "last_login": "2026-05-30",
-                "mfa": True,
-            },
-            {
-                "user": "alice@platform.com",
-                "role": "admin",
-                "last_login": "2026-05-30",
-                "mfa": True,
-            },
-            {
-                "user": "bob@platform.com",
-                "role": "admin",
-                "last_login": "2026-05-29",
-                "mfa": True,
-            },
-            {
-                "user": "carol@platform.com",
-                "role": "admin",
-                "last_login": "2026-05-28",
-                "mfa": False,
-            },
-            {
-                "user": "moderator1@platform.com",
-                "role": "moderator",
-                "last_login": "2026-05-30",
-                "mfa": True,
-            },
+            {"user": "superadmin@platform.com", "role": "superadmin", "last_login": "2026-05-30", "mfa": True},
+            {"user": "alice@platform.com", "role": "admin", "last_login": "2026-05-30", "mfa": True},
+            {"user": "bob@platform.com", "role": "admin", "last_login": "2026-05-29", "mfa": True},
+            {"user": "carol@platform.com", "role": "admin", "last_login": "2026-05-28", "mfa": False},
+            {"user": "moderator1@platform.com", "role": "moderator", "last_login": "2026-05-30", "mfa": True},
         ]
     )
 
@@ -172,66 +114,49 @@ async def admin_users_list() -> Table:
 @page.table(
     "Pending Access Requests", description="Users requesting elevated permissions"
 )
-async def pending_access_requests() -> Table:
+async def pending_access_requests(req: Request, pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "user": "newmod@example.com",
-                "current_role": "member",
-                "requested_role": "moderator",
-                "reason": "applying for mod team",
-                "date": "2026-05-30",
-            },
-            {
-                "user": "analyst@corp.com",
-                "current_role": "member",
-                "requested_role": "analyst",
-                "reason": "data project access",
-                "date": "2026-05-29",
-            },
-            {
-                "user": "editor@agency.io",
-                "current_role": "guest",
-                "requested_role": "editor",
-                "reason": "content contributor",
-                "date": "2026-05-29",
-            },
-        ]
-    )
+    rows = list(db.role_requests.values())
+    start = pagination.page * pagination.per_page
+    return Table(data=[
+        {
+            "user": r["user"],
+            "current_role": r["current_role"],
+            "requested_role": r["requested_role"],
+            "reason": r["reason"],
+            "date": r["date"],
+            "__actions__": [
+                {
+                    "color": "success",
+                    "method": "POST",
+                    "url": str(req.url_for(approve_request.__name__)) + f"?id={r['id']}",
+                },
+                {
+                    "color": "danger",
+                    "method": "DELETE",
+                    "url": str(req.url_for(deny_request.__name__)) + f"?id={r['id']}",
+                },
+            ],
+        }
+        for r in rows[start : start + pagination.per_page]
+    ])
 
 
 @page.table(
     "Recent Role Changes",
     description="Role assignments and revocations in the last 30 days",
 )
-async def recent_role_changes() -> Table:
+async def recent_role_changes(pagination: PaginationParamsDep) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
-    return Table(
-        data=[
-            {
-                "user": "moderator3@platform.com",
-                "change": "member → moderator",
-                "changed_by": "superadmin",
-                "date": "2026-05-29",
-            },
-            {
-                "user": "former_mod@example.com",
-                "change": "moderator → member",
-                "changed_by": "superadmin",
-                "date": "2026-05-25",
-            },
-            {
-                "user": "analyst2@corp.com",
-                "change": "member → analyst",
-                "changed_by": "alice@platform.com",
-                "date": "2026-05-22",
-            },
-            {
-                "user": "spammer@example.com",
-                "change": "member → banned",
-                "changed_by": "moderator1@platform.com",
-                "date": "2026-05-20",
-            },
-        ]
-    )
+    rows = sorted(db.role_changes.values(), key=lambda c: c["date"], reverse=True)
+    start = pagination.page * pagination.per_page
+    page_rows = rows[start : start + pagination.per_page]
+    return Table(data=[
+        {
+            "user": c["user"],
+            "change": c["change"],
+            "changed_by": c["changed_by"],
+            "date": c["date"],
+        }
+        for c in page_rows
+    ])
