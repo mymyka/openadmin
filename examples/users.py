@@ -1,8 +1,12 @@
+import random
+
 from fastapi import HTTPException, Request
 
 from openadmin import AdminPage, PaginationParamsDep, Stat, Table
 
 from . import db
+
+_AVATARS = [f"/static/avatars/avatar_{i}.svg" for i in range(1, 9)]
 
 page = AdminPage("Users")
 
@@ -42,6 +46,24 @@ async def delete_user(id: int) -> None:
     await db.execute("DELETE FROM users WHERE id = ?", (id,))
 
 
+@page.action_patch("Delete document", description="Remove the document attached to a user")
+async def delete_document(id: int) -> None:
+    row = await db.fetchone("SELECT id FROM users WHERE id = ?", (id,))
+    if not row:
+        raise HTTPException(status_code=404, detail="User not found")
+    await db.execute("UPDATE users SET document = NULL WHERE id = ?", (id,))
+
+
+@page.action_post("Refresh avatar", description="Assign a new random avatar to a user")
+async def refresh_avatar(id: int) -> None:
+    row = await db.fetchone("SELECT avatar FROM users WHERE id = ?", (id,))
+    if not row:
+        raise HTTPException(status_code=404, detail="User not found")
+    current = row.get("avatar")
+    choices = [a for a in _AVATARS if a != current] or _AVATARS
+    await db.execute("UPDATE users SET avatar = ? WHERE id = ?", (random.choice(choices), id))
+
+
 @page.action_post("Ban user", description="Move user to banned list")
 async def ban_user(id: int) -> None:
     user = await db.fetchone("SELECT * FROM users WHERE id = ?", (id,))
@@ -58,13 +80,28 @@ async def ban_user(id: int) -> None:
 async def user_list(req: Request, pagination: PaginationParamsDep) -> Table:
     offset = pagination.page * pagination.per_page
     rows = await db.fetchall(
-        "SELECT * FROM users ORDER BY id LIMIT ? OFFSET ?",
+        "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users ORDER BY id LIMIT ? OFFSET ?",
         (pagination.per_page, offset),
     )
     total = await db.count("users")
+    base_url = str(req.base_url).rstrip("/")
     for row in rows:
         row["active"] = bool(row["active"])
+        if row["document"]:
+            row["document"] = f"{base_url}{row['document']}"
+        if row["avatar"]:
+            row["avatar"] = f"{base_url}{row['avatar']}"
         row["__actions__"] = [
+            {
+                "color": "secondary",
+                "method": "PATCH",
+                "url": str(req.url_for(delete_document.__name__)) + f"?id={row['id']}",
+            },
+            {
+                "color": "info",
+                "method": "POST",
+                "url": str(req.url_for(refresh_avatar.__name__)) + f"?id={row['id']}",
+            },
             {
                 "color": "warning",
                 "method": "POST",

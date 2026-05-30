@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from openadmin import AdminPanel
 
@@ -7,6 +10,7 @@ from .users import page as users_admin
 from .welcome_admin import page as welcome_admin
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

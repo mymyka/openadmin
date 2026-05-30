@@ -37,7 +37,9 @@ def _create_schema() -> None:
                 plan        TEXT    NOT NULL DEFAULT 'free',
                 active      INTEGER NOT NULL DEFAULT 1,
                 role        TEXT    NOT NULL DEFAULT 'free',
-                registered  TEXT    NOT NULL
+                registered  TEXT    NOT NULL,
+                document    TEXT,
+                avatar      TEXT
             );
 
             CREATE TABLE IF NOT EXISTS banned_users (
@@ -48,6 +50,14 @@ def _create_schema() -> None:
                 banned_on   TEXT    NOT NULL
             );
         """)
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN document TEXT")
+        except Exception:
+            pass
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN avatar TEXT")
+        except Exception:
+            pass
     conn.close()
 
 

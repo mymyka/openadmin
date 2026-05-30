@@ -43,6 +43,7 @@ BAN_REASONS = ["spam", "harassment", "abuse", "impersonation", "scraping", "poli
 
 PLANS = ["free", "free", "free", "free", "premium", "premium", "enterprise"]
 ROLES = ["free", "free", "free", "free", "premium", "premium", "moderator", "admin"]
+AVATARS = [f"/static/avatars/avatar_{i}.svg" for i in range(1, 9)]
 
 
 def random_date(start: date, end: date) -> str:
@@ -87,17 +88,19 @@ def seed(conn: sqlite3.Connection) -> None:
         )
         active = random.random() > 0.1
         registered = random_date(start, today)
-        users.append((i, f"{first} {last}", email, plan, int(active), role, registered))
+        document = "/static/sample_document.txt" if random.random() > 0.3 else None
+        avatar = random.choice(AVATARS)
+        users.append((i, f"{first} {last}", email, plan, int(active), role, registered, document, avatar))
 
     # Force a few users registered today for "New Today" stat
     today_str = today.isoformat()
     for j in range(8):
         idx = random.randint(0, len(users) - 1)
         u = users[idx]
-        users[idx] = (u[0], u[1], u[2], u[3], u[4], u[5], today_str)
+        users[idx] = (u[0], u[1], u[2], u[3], u[4], u[5], today_str, u[7], u[8])
 
     conn.executemany(
-        "INSERT INTO users (id, name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?,?)",
+        "INSERT INTO users (id, name, email, plan, active, role, registered, document, avatar) VALUES (?,?,?,?,?,?,?,?,?)",
         users,
     )
 
