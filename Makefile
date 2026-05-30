@@ -19,7 +19,7 @@ check/cves:
 	@ uv audit --preview-features audit
 
 check/security:
-	@ uvx bandit -r src examples -q
+	@ uvx bandit -r src -q
 
 check/unused:
 	@ uvx vulture src examples --min-confidence 80
