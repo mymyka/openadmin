@@ -9,9 +9,9 @@ class Stat(BaseModel):
 
 class Action(BaseModel):
     color: str | Literal["danger", "warning", "info"]
-    method: Literal["POST", "GET", "PUT", "PATCH"]
+    method: Literal["POST", "GET", "PUT", "PATCH", "DELETE"]
     url: str
-    body: dict
+    body: dict | None = Field(None)
 
 
 class TableRow(BaseModel):

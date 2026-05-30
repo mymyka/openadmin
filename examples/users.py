@@ -1,6 +1,8 @@
 import asyncio
 import random
 
+from fastapi import Request
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Users")
@@ -68,8 +70,16 @@ async def banned_users() -> Stat:
     return Stat(value=213)
 
 
+@page.action_delete(
+    "Delete user", description="Delete user from database, no recovery !"
+)
+async def delete_user() -> None:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return None
+
+
 @page.table("User List", description="All registered users")
-async def user_list() -> Table:
+async def user_list(req: Request) -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
@@ -79,6 +89,13 @@ async def user_list() -> Table:
                 "email": "alice@example.com",
                 "plan": "premium",
                 "active": True,
+                "__actions__": [
+                    {
+                        "color": "danger",
+                        "method": "DELETE",
+                        "url": str(req.url_for(delete_user.__name__)),
+                    }
+                ],
             },
             {
                 "id": 2,
