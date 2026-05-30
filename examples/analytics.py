@@ -6,6 +6,39 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Analytics")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Analytics Dashboard
+
+Track how users find and interact with your platform in real time.
+
+## Key Metrics Explained
+
+| Metric | What It Measures | Healthy Range |
+|---|---|---|
+| Bounce Rate | Single-page sessions | < 40% |
+| Avg Session Duration | Time spent per visit | > 3 minutes |
+| Conversion Rate | Goal completions | > 3% |
+| Unique Visitors | Distinct users per day | Trending up |
+
+## Traffic Channel Priority
+
+- **Organic Search** — highest volume, strongest intent signal
+- **Direct** — returning users; indicates brand strength
+- **Referral** — third-party sites sending qualified traffic
+- **Social** — high volume but lower conversion; monitor separately
+- **Email** — smallest share but typically best conversion rate
+
+> A rising bounce rate combined with falling session duration usually points to a page speed or content relevance issue rather than an acquisition problem.
+
+## Geographic Focus
+
+Top-performing regions are the **United States** and **United Kingdom**, which together account for nearly half of all sessions. Germany and India are the fastest-growing markets by session share.
+"""
+
+
 @page.stat("Page Views Today", description="Total page views in the last 24 hours")
 async def page_views_today() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

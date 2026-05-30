@@ -6,6 +6,41 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Notifications")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Notifications
+
+Track delivery rates, engagement, and opt-out trends across push, in-app, email, and SMS channels.
+
+## Channel Opt-In Rates
+
+| Channel | Enabled | Opt-In Rate | Notes |
+|---|---|---|---|
+| In-App | 12,840 | 89.3% | Default on; highest reach |
+| Email | 11,400 | 79.3% | Transactional vs. marketing rules apply |
+| Push | 9,210 | 64.0% | Requires explicit browser/device permission |
+| SMS | 3,820 | 26.6% | Lowest adoption; high engagement when used |
+
+## Engagement Benchmarks
+
+- **Open Rate** — current average is **21.4%**; industry median for SaaS push is 18–25%
+- **In-app notifications** typically outperform push in open rate by 15–20 percentage points
+- Broadcasts with a personalised subject line see 30–40% higher open rates
+
+> Sending more than **3 broadcast notifications per week** significantly increases opt-out rates. Reserve broadcasts for genuinely important events — feature launches, maintenance windows, and security notices.
+
+## Opt-Out Trend
+
+Opt-outs spiked on **2026-05-28** (110 opt-outs vs. 140 opt-ins) following the maintenance window notification. Review the messaging for that broadcast — users who opt out after operational notices often prefer a lower-urgency format (e.g. in-app banner instead of push).
+
+## Failed Deliveries
+
+320 failures today. Most are due to expired push tokens (devices unregistered or app uninstalled). These should be pruned from the active token store to avoid inflating delivery attempt counts.
+"""
+
+
 @page.stat("Sent Today", description="Push and in-app notifications delivered today")
 async def sent_today() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

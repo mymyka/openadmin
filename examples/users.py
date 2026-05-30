@@ -6,6 +6,38 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Users")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# User Management
+
+Manage accounts, monitor growth, and maintain community standards across the platform.
+
+## Role Hierarchy
+
+| Role | Scope | Count |
+|---|---|---|
+| `superadmin` | Full system access | 2 |
+| `admin` | Manage users & content | 12 |
+| `moderator` | Moderate posts & reports | 87 |
+| `premium` | Paid plan features | 2,891 |
+| `free` | Default registered user | 11,179 |
+
+## Account Health
+
+- **63.3%** of users are active in the last 30 days — a strong engagement signal
+- **20.1%** are on a paid plan, the primary revenue-generating segment
+- **1.48%** of accounts are currently banned; review periodically for false positives
+
+> Before banning an account, always check for shared IPs or device fingerprints — a single bad actor may operate multiple accounts.
+
+## New User Trend
+
+47 users registered today. Maintain onboarding flow quality: a user who does not complete a key action in the first 48 hours is significantly less likely to convert to a paid plan.
+"""
+
+
 @page.stat("Total Users", description="Total number of registered users")
 async def total_users() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

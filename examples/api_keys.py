@@ -6,6 +6,47 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("API Keys")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# API Keys
+
+Monitor active API keys, usage patterns, and security events across all integrations.
+
+## Key Scopes
+
+| Scope | Access Level | Typical Use Case |
+|---|---|---|
+| `read:all` | Read any resource | Dashboards, reporting tools |
+| `read:users` | Read user data only | CRM integrations |
+| `write:posts` | Create and edit posts | Publishing tools |
+| `admin` | Full API access | Trusted internal services |
+
+## Key Prefixes
+
+Keys are prefixed to distinguish environment:
+
+- `sk_live_` — production keys; treat as credentials, never log
+- `sk_test_` — sandbox keys; safe to rotate freely during development
+
+> **Never commit API keys to version control.** If a `sk_live_` key is found in a repository, revoke it immediately regardless of whether the repository is private. Treat the key as compromised.
+
+## Rate Limit Alerts
+
+Two keys are currently above **80% of their daily quota**:
+
+- `ops@company.net` at 91% — on the Business plan (500K req/day)
+- `alice@example.com` at 82% — on the Pro plan (100K req/day)
+
+Contact key owners before they hit their limit to avoid unexpected `429` errors in their integrations.
+
+## Security Events
+
+A key belonging to `leaked@secret.com` was revoked on 2026-05-26 due to confirmed compromise. Keys revoked for this reason should also trigger a security review of any data accessed using that key in the preceding 72 hours.
+"""
+
+
 @page.stat("Total Active Keys", description="API keys currently in use")
 async def total_active_keys() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

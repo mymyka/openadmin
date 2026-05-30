@@ -6,6 +6,38 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Revenue")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Revenue Overview
+
+Monitor recurring revenue, growth trends, and financial health across all subscription tiers.
+
+## Subscription Tiers
+
+| Plan | Price/mo | Target Segment |
+|---|---|---|
+| Starter | $14.50 | Individuals & hobbyists |
+| Pro | $39.00 | Freelancers & small teams |
+| Business | $74.67 | Growing companies |
+| Enterprise | $245.00 | Large organizations |
+
+## Growth at a Glance
+
+MRR has grown consistently at **~3% month-over-month** for the past six months, placing ARR firmly above $1M.
+
+> A churn rate of 2.1% is within acceptable SaaS benchmarks (< 3% monthly), but should be monitored closely — a sustained rise above 3% signals a retention issue worth investigating.
+
+## Revenue Health Indicators
+
+- **MRR** — primary growth signal; watch for month-over-month deceleration
+- **Churn Rate** — track by cohort, not just overall average
+- **Refund Rate** — `refunds / revenue` ideally stays below 2%
+- **ARPU** — average revenue per user should rise as the Pro tier grows
+"""
+
+
 @page.stat("MRR", description="Monthly Recurring Revenue")
 async def mrr() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

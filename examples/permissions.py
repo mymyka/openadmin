@@ -6,6 +6,45 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Permissions")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Access Control & Permissions
+
+Manage roles, review privilege grants, and ensure least-privilege access across the platform.
+
+## Role Capability Matrix
+
+| Role | Delete Content | Ban Users | Export Data | User Count |
+|---|---|---|---|---|
+| `superadmin` | Yes | Yes | Yes | 2 |
+| `admin` | Yes | Yes | Yes | 12 |
+| `moderator` | Yes | No | No | 34 |
+| `analyst` | No | No | Yes | 18 |
+| `support` | No | No | No | 42 |
+| `editor` | No | No | No | 210 |
+| `member` | No | No | No | 13,940 |
+| `guest` | No | No | No | 120 |
+
+## Security Policies
+
+- **MFA is mandatory** for all `admin` and `superadmin` accounts
+- Any admin without MFA enabled (`carol@platform.com`) must be remediated within 24 hours
+- Role upgrades require approval from an existing `admin` or `superadmin`
+
+> The principle of least privilege applies: grant the minimum role necessary for the task. A content contributor needs `editor`, not `admin`, even if they ask for broader access.
+
+## Access Requests
+
+There are **5 pending requests** to review. All requests older than 3 days without a decision should be escalated — prolonged uncertainty degrades the user's onboarding experience.
+
+## Audit Trail
+
+All role changes are logged with the granting admin's identity and timestamp. Role revocations are also captured — see the Recent Role Changes table for the full history.
+"""
+
+
 @page.stat("Total Roles", description="Defined roles in the system")
 async def total_roles() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

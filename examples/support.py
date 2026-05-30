@@ -6,6 +6,40 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Support")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Support Operations
+
+Monitor ticket volume, agent performance, and customer satisfaction across all support channels.
+
+## SLA Targets
+
+| Priority | First Response | Resolution |
+|---|---|---|
+| High | < 1 hour | < 8 hours |
+| Medium | < 4 hours | < 24 hours |
+| Low | < 24 hours | < 72 hours |
+
+## This Week at a Glance
+
+- Current CSAT score is **92%** — above the target of 90%
+- Avg first response time is **1h 48m**, within SLA for high-priority tickets
+- `billing` and `access` categories have the highest open counts and should be prioritised
+
+> Tickets in the `bug-report` category have the longest average close time (4h 40m). Where possible, escalate confirmed bugs to engineering with a linked ticket so agents can close their side promptly.
+
+## Team Performance
+
+**agent_sarah** leads the team with 148 closed tickets and a 96% CSAT this month. Agents below 90% CSAT should be reviewed for coaching opportunities rather than penalised — low scores often correlate with inheriting the hardest ticket categories.
+
+## Feature Requests
+
+Feature requests currently have no average close time — this is by design. They are logged, tagged, and forwarded to the product team monthly. Agents should not promise delivery timelines to users.
+"""
+
+
 @page.stat("Open Tickets", description="Unresolved support tickets")
 async def open_tickets() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

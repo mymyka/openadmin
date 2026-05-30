@@ -6,6 +6,41 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Servers")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Infrastructure Overview
+
+Monitor the health, performance, and capacity of all server nodes in the cluster.
+
+## Node Types
+
+| Node Group | Count | Role |
+|---|---|---|
+| `api-*` | 3 | Handle inbound HTTP traffic |
+| `worker-*` | 2 | Process background jobs and queues |
+| `db-primary` | 1 | Primary read/write database |
+| `db-replica` | 1 | Read replica and failover target |
+| `cache-01` | 1 | In-memory cache layer (Redis) |
+
+## Current Alerts
+
+> **worker-02** is running at 89% CPU and 91% memory. This node should be investigated before it causes job queue delays. Consider draining and restarting if the condition persists beyond 30 minutes.
+
+## Capacity Thresholds
+
+- CPU > **80%** sustained for 5 min → scale or investigate
+- Memory > **85%** → risk of OOM kills on that node
+- Disk > **80%** → schedule cleanup or expand volume
+- Request rate spike > **2×** baseline → check for traffic anomaly or DDoS
+
+## Deployment Policy
+
+All production deployments go through `ci-bot` with a mandatory rollback plan. Manual deployments by named admins are permitted for hotfixes but must be logged and reviewed within 24 hours.
+"""
+
+
 @page.stat("Total Nodes", description="Active server nodes in the cluster")
 async def total_nodes() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

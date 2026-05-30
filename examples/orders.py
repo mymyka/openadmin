@@ -6,6 +6,45 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Orders")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Orders
+
+Track order volume, fulfillment status, and flag suspicious transactions for review.
+
+## Order Lifecycle
+
+```
+pending → processing → shipped → delivered
+                   ↘ cancelled
+```
+
+## Status Breakdown
+
+| Status | Count | Share | Action Required |
+|---|---|---|---|
+| delivered | 3,840 | 79.6% | None |
+| shipped | 412 | 8.5% | Monitor transit |
+| processing | 280 | 5.8% | Fulfillment queue |
+| pending | 154 | 3.2% | Awaiting payment confirmation |
+| cancelled | 135 | 2.8% | Refund if charged |
+
+## Fraud Review
+
+> Orders flagged as `fraud-risk` or `address-mismatch` must be reviewed within **4 hours** of placement. High-value orders (> $500) are automatically escalated.
+
+- Always cross-check billing and shipping addresses for high-value orders
+- Repeated orders from the same email with different cards are a strong fraud signal
+- Bulk orders from new accounts (`high-value` flag) require manual approval before fulfillment
+
+## Average Order Value
+
+Current AOV is **$67.40**. Upsell prompts at checkout have historically lifted AOV by 12–18%.
+"""
+
+
 @page.stat("Orders Today", description="New orders placed in the last 24 hours")
 async def orders_today() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

@@ -6,6 +6,53 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Media")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Media Storage
+
+Manage uploaded files, monitor storage consumption, and review flagged content.
+
+## Storage Breakdown
+
+| Type | Files | Size | Share |
+|---|---|---|---|
+| Video | 8,420 | 1.12 TB | 60.9% |
+| Image | 198,400 | 0.48 TB | 26.1% |
+| Document | 64,100 | 0.18 TB | 9.8% |
+| Audio | 12,800 | 0.04 TB | 2.2% |
+| Other | 400 | 0.02 TB | 1.1% |
+
+**Video dominates storage** despite accounting for fewer than 3% of total files. Per-user video upload limits are the most effective lever for controlling storage growth.
+
+## Storage Capacity
+
+Currently using **1.84 TB of an estimated 10 TB provisioned limit**. At the current upload rate of ~1,840 files/day, the platform has approximately **8–12 months** of headroom before requiring expansion.
+
+> Files uploaded through the API bypass client-side size limits. Monitor the top uploaders table for users who may be exploiting this — `videocreator@studio.com` alone holds 210 GB.
+
+## Content Moderation
+
+14 files are pending review. Flagged files are held from public access until cleared or removed:
+
+- `policy-violation` — manual admin decision required
+- `copyright` — forward to legal team before acting
+- `spam` — safe to delete immediately after auto-scan confirmation
+
+## Accepted File Types
+
+```
+Images:    .jpg  .jpeg  .png  .gif  .webp  .svg
+Video:     .mp4  .webm  .mov
+Audio:     .mp3  .wav  .ogg
+Documents: .pdf  .docx  .xlsx  .csv  .txt
+```
+
+Files outside these types are rejected at upload time.
+"""
+
+
 @page.stat("Total Files", description="All files stored across the platform")
 async def total_files() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

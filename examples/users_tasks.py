@@ -6,6 +6,41 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Users Tasks")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# User Tasks
+
+Monitor task completion rates, overdue items, and platform-wide engagement with user-assigned actions.
+
+## Task Status Breakdown
+
+| Status | Count | Share | Notes |
+|---|---|---|---|
+| `completed` | 6,820 | 78.0% | Closed tasks |
+| `pending` | 933 | 10.7% | Not yet started |
+| `in_progress` | 894 | 10.2% | Actively being worked |
+| `overdue` | 94 | 1.1% | Past due date, incomplete |
+
+## Completion Rate
+
+The current monthly completion rate is **78.4%** — a healthy signal for user engagement. Tasks that remain in `pending` for more than 7 days with no status change are candidates for a nudge notification.
+
+> Overdue tasks should not be automatically closed or deleted. Users may still complete them; closure should be user-initiated. Admins can mark tasks `cancelled` when the underlying requirement is no longer valid.
+
+## Overdue Task Policy
+
+- Tasks overdue by **< 7 days** — send a reminder notification
+- Tasks overdue by **7–14 days** — flag for support follow-up
+- Tasks overdue by **> 14 days** — eligible for admin-assisted resolution or cancellation
+
+## Task Assignment Sources
+
+Tasks are created either by users themselves or system-generated (e.g. onboarding steps, subscription renewals, compliance actions like "Submit tax documents"). System-generated tasks cannot be deleted by users — only admins can cancel them.
+"""
+
+
 @page.stat("Total Tasks", description="Total number of tasks across all users")
 async def total_tasks() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

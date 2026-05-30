@@ -6,6 +6,44 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Logs")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Log Monitoring
+
+Track application errors, system events, and admin actions for debugging and compliance.
+
+## Log Severity Levels
+
+| Level | Meaning | Response |
+|---|---|---|
+| `CRITICAL` | Service-threatening incident | Immediate page, incident opened |
+| `ERROR` | Request or job failed | Investigate within 1 hour |
+| `WARN` | Degraded behaviour, not failing | Review daily |
+| `INFO` | Normal operational events | Retained for 30 days |
+| `DEBUG` | Verbose trace data | Development only, not in production |
+
+## Current Status
+
+There are **3 critical events** in the last 7 days — all resolved. The highest-error service is `api` (84 errors this week), followed by `mailer` (32 errors), where SMTP auth failures indicate a likely credential rotation issue.
+
+> SMTP auth failures (`mailer` service) have been recurring since 2026-05-30 10:30. If the mail provider credentials were recently rotated, update the secret in the environment configuration and redeploy the mailer service.
+
+## Audit Log
+
+All admin actions are captured in the audit log for compliance purposes:
+
+- Entries are **immutable** — they cannot be deleted through the admin panel
+- Retention policy: **12 months** for audit events, **30 days** for application logs
+- Audit log access is restricted to `admin` and `superadmin` roles
+
+## Log Volume
+
+Today's ingestion is **4.2M lines**. Alerts fire if ingest drops below 500K (possible pipeline failure) or exceeds 20M (potential log flood from a runaway process).
+"""
+
+
 @page.stat("Errors Today", description="Application errors logged in the last 24 hours")
 async def errors_today() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))

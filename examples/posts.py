@@ -6,6 +6,47 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Posts")
 
 
+@page.markdown("Overview")
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
+    return """
+# Content Management
+
+Review post performance, manage moderation queues, and track publishing activity across the platform.
+
+## Post Status Summary
+
+| Status | Count | Notes |
+|---|---|---|
+| Published | 51,209 | Live and publicly visible |
+| Draft | 5,318 | Not yet submitted for review |
+| Pending Review | 3 | Awaiting moderation decision |
+| Deleted | — | Soft-deleted; recoverable for 30 days |
+
+## Category Performance
+
+`comparison` posts drive the highest average views (165.3) despite having fewer total posts. This signals strong reader intent — comparison content is actively searched for.
+
+> The `tutorial` category accounts for the most total views (1.82M), but its per-post average (98.8) is lower than `comparison` (165.3). Consider cross-linking tutorial content to comparison posts to lift average engagement.
+
+## Moderation Queue
+
+**5 posts are pending review.** Posts are held when they match one or more auto-flag criteria:
+
+- `ai-content` — generated or heavily AI-assisted text detected
+- `misinformation` — claims flagged by automated fact-check signals
+- `spam` — bulk or duplicate submission patterns
+- `promotional` — undisclosed commercial content
+- `policy-violation` — explicit, harmful, or illegal content
+
+> `policy-violation` posts must be reviewed within **2 hours** of flagging. All other categories have a 24-hour SLA.
+
+## Top Authors
+
+**Alice Johnson** is the platform's most prolific author (342 posts) and also appears as the author of the highest single-post view count (3,201 views for "Building Admin Panels Fast"). High-volume authors in good standing may be eligible for a `verified` badge.
+"""
+
+
 @page.stat("Total Posts", description="All posts ever created")
 async def total_posts() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
