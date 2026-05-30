@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Posts")
 
 
 @page.stat("Total Posts", description="All posts ever created")
-def total_posts() -> Stat:
+async def total_posts() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=58_741)
 
 
 @page.stat("Published", description="Posts currently live")
-def published_posts() -> Stat:
+async def published_posts() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=51_209)
 
 
 @page.stat("Drafts", description="Posts saved but not published")
-def draft_posts() -> Stat:
+async def draft_posts() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=5_318)
 
 
 @page.stat("Total Views", description="Cumulative views across all posts")
-def total_views() -> Stat:
+async def total_views() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=4_820_113)
 
 
 @page.stat("Avg Views per Post", description="Mean views across published posts")
-def avg_views() -> Stat:
+async def avg_views() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=94.1)
 
 
 @page.table("Recent Posts", description="Latest published posts")
-def recent_posts() -> Table:
+async def recent_posts() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -72,7 +81,8 @@ def recent_posts() -> Table:
 
 
 @page.table("Top Posts", description="Most viewed posts of all time")
-def top_posts() -> Table:
+async def top_posts() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -115,7 +125,8 @@ def top_posts() -> Table:
 
 
 @page.table("Posts by Category", description="Post count grouped by category")
-def posts_by_category() -> Table:
+async def posts_by_category() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -153,7 +164,8 @@ def posts_by_category() -> Table:
 
 
 @page.table("Pending Review", description="Posts awaiting moderation approval")
-def pending_review() -> Table:
+async def pending_review() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -196,7 +208,8 @@ def pending_review() -> Table:
 
 
 @page.table("Deleted Posts", description="Recently deleted posts with removal reason")
-def deleted_posts() -> Table:
+async def deleted_posts() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {

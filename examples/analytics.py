@@ -1,58 +1,58 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Analytics")
 
 
 @page.stat("Page Views Today", description="Total page views in the last 24 hours")
-def page_views_today() -> Stat:
+async def page_views_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=128_450)
 
 
 @page.stat("Unique Visitors", description="Distinct visitors today")
-def unique_visitors() -> Stat:
+async def unique_visitors() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=42_318)
 
 
 @page.stat("Bounce Rate", description="Percentage of single-page sessions")
-def bounce_rate() -> Stat:
+async def bounce_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="38.4%")
 
 
 @page.stat("Avg Session Duration", description="Mean time users spend per session")
-def avg_session_duration() -> Stat:
+async def avg_session_duration() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="4m 12s")
 
 
 @page.stat("Conversion Rate", description="Visitors who completed a goal action")
-def conversion_rate() -> Stat:
+async def conversion_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="3.7%")
 
 
 @page.table("Top Pages", description="Most visited pages in the last 7 days")
-def top_pages() -> Table:
+async def top_pages() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"path": "/", "views": 98_210, "unique": 61_400, "avg_time": "1m 05s"},
             {"path": "/blog", "views": 54_320, "unique": 38_200, "avg_time": "3m 44s"},
             {"path": "/pricing", "views": 31_880, "unique": 24_100, "avg_time": "2m 58s"},
-            {
-                "path": "/docs",
-                "views": 29_440,
-                "unique": 18_750,
-                "avg_time": "7m 21s",
-            },
-            {
-                "path": "/signup",
-                "views": 18_920,
-                "unique": 17_300,
-                "avg_time": "0m 52s",
-            },
+            {"path": "/docs", "views": 29_440, "unique": 18_750, "avg_time": "7m 21s"},
+            {"path": "/signup", "views": 18_920, "unique": 17_300, "avg_time": "0m 52s"},
         ]
     )
 
 
 @page.table("Traffic Sources", description="Where visitors are coming from")
-def traffic_sources() -> Table:
+async def traffic_sources() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"source": "Organic Search", "sessions": 58_400, "share": "45.4%", "conversions": 2104},
@@ -65,7 +65,8 @@ def traffic_sources() -> Table:
 
 
 @page.table("Top Countries", description="Visitor geography breakdown")
-def top_countries() -> Table:
+async def top_countries() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"country": "United States", "visitors": 41_200, "share": "32.1%", "avg_pages": 4.2},
@@ -78,7 +79,8 @@ def top_countries() -> Table:
 
 
 @page.table("Device Breakdown", description="Sessions split by device type")
-def device_breakdown() -> Table:
+async def device_breakdown() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"device": "Desktop", "sessions": 68_400, "share": "53.2%", "bounce_rate": "31.2%"},
@@ -89,7 +91,8 @@ def device_breakdown() -> Table:
 
 
 @page.table("Recent Events", description="Latest tracked user interactions")
-def recent_events() -> Table:
+async def recent_events() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"time": "2026-05-30 12:44", "event": "signup", "user": "anonymous", "page": "/signup"},

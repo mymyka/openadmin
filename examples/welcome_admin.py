@@ -1,10 +1,14 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Welcome to admin")
 
 
 @page.markdown("Overview")
-def overview() -> str:
+async def overview() -> str:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return """
 # Welcome to the Admin Panel
 
@@ -20,27 +24,32 @@ Use this panel to monitor platform health, review recent activity, and manage yo
 
 
 @page.stat("Total Users", description="All registered users on the platform")
-def total_users() -> Stat:
+async def total_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=14_382)
 
 
 @page.stat("Active Sessions", description="Users currently logged in")
-def active_sessions() -> Stat:
+async def active_sessions() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=203)
 
 
 @page.stat("Open Issues", description="Unresolved support tickets")
-def open_issues() -> Stat:
+async def open_issues() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=17)
 
 
 @page.stat("Server Uptime", description="System uptime since last restart")
-def server_uptime() -> Stat:
+async def server_uptime() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="14d 6h 42m")
 
 
 @page.table("Recent Activity", description="Latest admin actions across the panel")
-def recent_activity() -> Table:
+async def recent_activity() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -78,7 +87,8 @@ def recent_activity() -> Table:
 
 
 @page.table("System Health", description="Key service status indicators")
-def system_health() -> Table:
+async def system_health() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {

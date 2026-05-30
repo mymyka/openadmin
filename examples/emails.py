@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Emails")
 
 
 @page.stat("Sent Today", description="Emails dispatched in the last 24 hours")
-def sent_today() -> Stat:
+async def sent_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=24_810)
 
 
 @page.stat("Open Rate", description="Average open rate for this month's campaigns")
-def open_rate() -> Stat:
+async def open_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="28.4%")
 
 
 @page.stat("Click Rate", description="Average click-through rate this month")
-def click_rate() -> Stat:
+async def click_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="4.1%")
 
 
 @page.stat("Bounced", description="Emails that failed delivery today")
-def bounced() -> Stat:
+async def bounced() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=182)
 
 
 @page.stat("Unsubscribes Today", description="Users who opted out in the last 24 hours")
-def unsubscribes_today() -> Stat:
+async def unsubscribes_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=34)
 
 
 @page.table("Recent Campaigns", description="Last email campaigns sent")
-def recent_campaigns() -> Table:
+async def recent_campaigns() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -65,7 +74,8 @@ def recent_campaigns() -> Table:
 
 
 @page.table("Delivery Failures", description="Emails that bounced or failed recently")
-def delivery_failures() -> Table:
+async def delivery_failures() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"email": "old@deactivated.com", "type": "hard-bounce", "campaign": "May Product Update", "date": "2026-05-28"},
@@ -77,7 +87,8 @@ def delivery_failures() -> Table:
 
 
 @page.table("Scheduled Campaigns", description="Upcoming email campaigns queued for delivery")
-def scheduled_campaigns() -> Table:
+async def scheduled_campaigns() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"campaign": "June Newsletter", "recipients": 21_400, "scheduled": "2026-06-01 09:00", "status": "queued"},
@@ -88,7 +99,8 @@ def scheduled_campaigns() -> Table:
 
 
 @page.table("Top Links Clicked", description="Most-clicked links across all campaigns this month")
-def top_links() -> Table:
+async def top_links() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"url": "/pricing", "clicks": 4_820, "campaign": "Feature Announcement: Exports", "ctr": "21.8%"},

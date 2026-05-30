@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Support")
 
 
 @page.stat("Open Tickets", description="Unresolved support tickets")
-def open_tickets() -> Stat:
+async def open_tickets() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=47)
 
 
 @page.stat("Resolved Today", description="Tickets closed in the last 24 hours")
-def resolved_today() -> Stat:
+async def resolved_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=31)
 
 
 @page.stat("Avg Response Time", description="Mean first-response time this week")
-def avg_response_time() -> Stat:
+async def avg_response_time() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="1h 48m")
 
 
 @page.stat("Customer Satisfaction", description="CSAT score from recent surveys")
-def csat_score() -> Stat:
+async def csat_score() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="92%")
 
 
 @page.table("Open Tickets", description="All currently unresolved support requests")
-def open_tickets_list() -> Table:
+async def open_tickets_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"id": "#T-4401", "subject": "Cannot access my account", "user": "locked@example.com", "priority": "high", "opened": "2026-05-30"},
@@ -37,7 +45,8 @@ def open_tickets_list() -> Table:
 
 
 @page.table("Recently Resolved", description="Tickets closed in the last 3 days")
-def recently_resolved() -> Table:
+async def recently_resolved() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"id": "#T-4399", "subject": "Password reset not arriving", "resolved_by": "agent_sarah", "time_to_close": "2h 10m", "date": "2026-05-30"},
@@ -50,7 +59,8 @@ def recently_resolved() -> Table:
 
 
 @page.table("Tickets by Category", description="Volume of tickets grouped by topic")
-def tickets_by_category() -> Table:
+async def tickets_by_category() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"category": "billing", "open": 12, "resolved_this_month": 84, "avg_close_time": "1h 30m"},
@@ -63,7 +73,8 @@ def tickets_by_category() -> Table:
 
 
 @page.table("Agent Performance", description="Support team stats for this month")
-def agent_performance() -> Table:
+async def agent_performance() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"agent": "agent_sarah", "closed": 148, "avg_time": "1h 12m", "csat": "96%"},

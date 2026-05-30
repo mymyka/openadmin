@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Media")
 
 
 @page.stat("Total Files", description="All files stored across the platform")
-def total_files() -> Stat:
+async def total_files() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=284_120)
 
 
 @page.stat("Storage Used", description="Total storage consumed")
-def storage_used() -> Stat:
+async def storage_used() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="1.84 TB")
 
 
 @page.stat("Uploads Today", description="Files uploaded in the last 24 hours")
-def uploads_today() -> Stat:
+async def uploads_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=1_840)
 
 
 @page.stat("Flagged Files", description="Files pending moderation review")
-def flagged_files() -> Stat:
+async def flagged_files() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=14)
 
 
 @page.table("Recent Uploads", description="Latest files uploaded by users")
-def recent_uploads() -> Table:
+async def recent_uploads() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"filename": "product-hero.png", "uploader": "alice@example.com", "size": "2.4 MB", "type": "image/png", "date": "2026-05-30"},
@@ -37,7 +45,8 @@ def recent_uploads() -> Table:
 
 
 @page.table("Storage by File Type", description="Disk usage breakdown by media type")
-def storage_by_type() -> Table:
+async def storage_by_type() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"type": "video", "files": 8_420, "total_size": "1.12 TB", "share": "60.9%"},
@@ -50,7 +59,8 @@ def storage_by_type() -> Table:
 
 
 @page.table("Flagged Files", description="Files reported or auto-flagged for review")
-def flagged_files_list() -> Table:
+async def flagged_files_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"filename": "bad-content.mp4", "uploader": "troll@example.com", "flag": "policy-violation", "reported_by": "user#8820", "date": "2026-05-30"},
@@ -61,7 +71,8 @@ def flagged_files_list() -> Table:
 
 
 @page.table("Top Uploaders", description="Users with the most storage consumed")
-def top_uploaders() -> Table:
+async def top_uploaders() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"user": "videocreator@studio.com", "files": 4_210, "storage": "210 GB", "last_upload": "2026-05-30"},

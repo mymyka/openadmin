@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Logs")
 
 
 @page.stat("Errors Today", description="Application errors logged in the last 24 hours")
-def errors_today() -> Stat:
+async def errors_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=142)
 
 
 @page.stat("Warnings Today", description="Warning-level log events today")
-def warnings_today() -> Stat:
+async def warnings_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=830)
 
 
 @page.stat("Critical Alerts", description="Critical-severity events in the last 7 days")
-def critical_alerts() -> Stat:
+async def critical_alerts() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=3)
 
 
 @page.stat("Log Volume (24h)", description="Total log lines ingested today")
-def log_volume() -> Stat:
+async def log_volume() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="4.2M")
 
 
 @page.table("Recent Errors", description="Latest application errors")
-def recent_errors() -> Table:
+async def recent_errors() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -67,7 +75,8 @@ def recent_errors() -> Table:
 
 
 @page.table("Critical Events", description="High-severity incidents in the last 7 days")
-def critical_events() -> Table:
+async def critical_events() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -96,7 +105,8 @@ def critical_events() -> Table:
 
 
 @page.table("Audit Log", description="Admin actions logged for compliance")
-def audit_log() -> Table:
+async def audit_log() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"time": "2026-05-30 12:31", "admin": "superadmin", "action": "ban_user", "target": "spammer@example.com", "ip": "192.168.1.1"},
@@ -109,7 +119,8 @@ def audit_log() -> Table:
 
 
 @page.table("Errors by Service", description="Error count grouped by service this week")
-def errors_by_service() -> Table:
+async def errors_by_service() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"service": "api", "errors": 84, "warnings": 410, "last_error": "2026-05-30 12:48"},

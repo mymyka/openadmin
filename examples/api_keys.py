@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("API Keys")
 
 
 @page.stat("Total Active Keys", description="API keys currently in use")
-def total_active_keys() -> Stat:
+async def total_active_keys() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=1_842)
 
 
 @page.stat("Keys Created Today", description="New API keys issued in the last 24 hours")
-def keys_created_today() -> Stat:
+async def keys_created_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=28)
 
 
 @page.stat("Keys Revoked This Month", description="API keys disabled in May 2026")
-def keys_revoked_month() -> Stat:
+async def keys_revoked_month() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=64)
 
 
 @page.stat("Requests Today (API)", description="Total API calls authenticated by key today")
-def api_requests_today() -> Stat:
+async def api_requests_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=2_841_002)
 
 
 @page.table("Recently Created Keys", description="Newest API keys issued")
-def recently_created() -> Table:
+async def recently_created() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"key_prefix": "sk_live_aB3x…", "owner": "alice@example.com", "scope": "read:all", "created": "2026-05-30"},
@@ -37,7 +45,8 @@ def recently_created() -> Table:
 
 
 @page.table("High Usage Keys", description="API keys with the most requests this week")
-def high_usage_keys() -> Table:
+async def high_usage_keys() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"key_prefix": "sk_live_aB3x…", "owner": "alice@example.com", "requests_week": 1_840_200, "last_used": "2026-05-30 12:48"},
@@ -50,7 +59,8 @@ def high_usage_keys() -> Table:
 
 
 @page.table("Recently Revoked Keys", description="API keys that were recently disabled")
-def recently_revoked() -> Table:
+async def recently_revoked() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"key_prefix": "sk_live_oP4c…", "owner": "former@employee.com", "revoked_by": "superadmin", "reason": "offboarding", "date": "2026-05-28"},
@@ -61,7 +71,8 @@ def recently_revoked() -> Table:
 
 
 @page.table("Keys Approaching Rate Limit", description="Keys that hit over 80% of their rate limit today")
-def rate_limit_warnings() -> Table:
+async def rate_limit_warnings() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"key_prefix": "sk_live_aB3x…", "owner": "alice@example.com", "usage": "82%", "limit": "100k req/day", "plan": "Pro"},

@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Servers")
 
 
 @page.stat("Total Nodes", description="Active server nodes in the cluster")
-def total_nodes() -> Stat:
+async def total_nodes() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=12)
 
 
 @page.stat("Avg CPU Usage", description="Mean CPU utilization across all nodes")
-def avg_cpu() -> Stat:
+async def avg_cpu() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="34.2%")
 
 
 @page.stat("Avg Memory Usage", description="Mean RAM utilization across all nodes")
-def avg_memory() -> Stat:
+async def avg_memory() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="61.8%")
 
 
 @page.stat("Disk Usage", description="Total disk used across all nodes")
-def disk_usage() -> Stat:
+async def disk_usage() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="4.1 TB / 10 TB")
 
 
 @page.stat("Requests/sec", description="Current aggregate requests per second")
-def requests_per_sec() -> Stat:
+async def requests_per_sec() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=8_420)
 
 
 @page.table("Node Status", description="Health and resource usage per server node")
-def node_status() -> Table:
+async def node_status() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"node": "api-01", "status": "healthy", "cpu": "28%", "memory": "58%", "uptime": "14d 6h"},
@@ -45,7 +54,8 @@ def node_status() -> Table:
 
 
 @page.table("Recent Deployments", description="Latest code deployments to production")
-def recent_deployments() -> Table:
+async def recent_deployments() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"version": "v2.14.1", "deployed_by": "ci-bot", "nodes": "all", "status": "success", "date": "2026-05-30 08:00"},
@@ -57,7 +67,8 @@ def recent_deployments() -> Table:
 
 
 @page.table("Active Alerts", description="Infrastructure alerts currently firing")
-def active_alerts() -> Table:
+async def active_alerts() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"alert": "High CPU on worker-02", "severity": "warning", "node": "worker-02", "since": "2026-05-30 11:40"},
@@ -67,7 +78,8 @@ def active_alerts() -> Table:
 
 
 @page.table("Network Traffic", description="Inbound and outbound traffic by node (last hour)")
-def network_traffic() -> Table:
+async def network_traffic() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"node": "api-01", "inbound_mb": 1_240, "outbound_mb": 3_820, "connections": 8_400},

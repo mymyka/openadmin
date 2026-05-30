@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Orders")
 
 
 @page.stat("Orders Today", description="New orders placed in the last 24 hours")
-def orders_today() -> Stat:
+async def orders_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=348)
 
 
 @page.stat("Pending Fulfillment", description="Orders awaiting processing or shipment")
-def pending_fulfillment() -> Stat:
+async def pending_fulfillment() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=84)
 
 
 @page.stat("Completed This Month", description="Orders fulfilled in May 2026")
-def completed_month() -> Stat:
+async def completed_month() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=4_821)
 
 
 @page.stat("Avg Order Value", description="Mean order value this month")
-def avg_order_value() -> Stat:
+async def avg_order_value() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="$67.40")
 
 
 @page.stat("Cancellation Rate", description="Percentage of orders cancelled this month")
-def cancellation_rate() -> Stat:
+async def cancellation_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="2.8%")
 
 
 @page.table("Recent Orders", description="Latest orders placed on the platform")
-def recent_orders() -> Table:
+async def recent_orders() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"order_id": "#ORD-9901", "customer": "Alice Johnson", "total": "$142.00", "status": "shipped", "date": "2026-05-30"},
@@ -42,7 +51,8 @@ def recent_orders() -> Table:
 
 
 @page.table("Orders by Status", description="Current distribution of order statuses")
-def orders_by_status() -> Table:
+async def orders_by_status() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"status": "delivered", "count": 3_840, "share": "79.6%"},
@@ -55,7 +65,8 @@ def orders_by_status() -> Table:
 
 
 @page.table("Flagged Orders", description="Orders flagged for manual review")
-def flagged_orders() -> Table:
+async def flagged_orders() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"order_id": "#ORD-9880", "customer": "suspicious@email.xyz", "total": "$899.00", "flag": "fraud-risk", "date": "2026-05-29"},
@@ -66,7 +77,8 @@ def flagged_orders() -> Table:
 
 
 @page.table("Top Customers", description="Customers by total lifetime spend")
-def top_customers() -> Table:
+async def top_customers() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"customer": "TechCorp Inc.", "orders": 142, "lifetime_value": "$18,420", "last_order": "2026-05-30"},

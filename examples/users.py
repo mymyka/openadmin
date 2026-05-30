@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Users")
 
 
 @page.stat("Total Users", description="Total number of registered users")
-def total_users() -> Stat:
+async def total_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=14_382)
 
 
 @page.stat("Active Users", description="Users active in the last 30 days")
-def active_users() -> Stat:
+async def active_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=9_104)
 
 
 @page.stat("New Today", description="Users who registered today")
-def new_today() -> Stat:
+async def new_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=47)
 
 
 @page.stat("Premium Users", description="Users on a paid plan")
-def premium_users() -> Stat:
+async def premium_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=2_891)
 
 
 @page.stat("Banned Users", description="Accounts currently suspended")
-def banned_users() -> Stat:
+async def banned_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=213)
 
 
 @page.table("User List", description="All registered users")
-def user_list() -> Table:
+async def user_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -72,7 +81,8 @@ def user_list() -> Table:
 
 
 @page.table("Recent Signups", description="Users who registered in the last 7 days")
-def recent_signups() -> Table:
+async def recent_signups() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -110,7 +120,8 @@ def recent_signups() -> Table:
 
 
 @page.table("Top Users", description="Users with the most activity")
-def top_users() -> Table:
+async def top_users() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -153,7 +164,8 @@ def top_users() -> Table:
 
 
 @page.table("Banned Users", description="Suspended accounts with reasons")
-def banned_user_list() -> Table:
+async def banned_user_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -196,7 +208,8 @@ def banned_user_list() -> Table:
 
 
 @page.table("Role Distribution", description="Breakdown of users by assigned role")
-def role_distribution() -> Table:
+async def role_distribution() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"role": "admin", "count": 12, "percentage": "0.08%"},

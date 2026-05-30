@@ -1,35 +1,44 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Revenue")
 
 
 @page.stat("MRR", description="Monthly Recurring Revenue")
-def mrr() -> Stat:
+async def mrr() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="$84,320")
 
 
 @page.stat("ARR", description="Annualized Recurring Revenue")
-def arr() -> Stat:
+async def arr() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="$1,011,840")
 
 
 @page.stat("Revenue Today", description="Total revenue collected today")
-def revenue_today() -> Stat:
+async def revenue_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="$12,480")
 
 
 @page.stat("Refunds This Month", description="Total refunded amount in May 2026")
-def refunds_month() -> Stat:
+async def refunds_month() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="$1,204")
 
 
 @page.stat("Churn Rate", description="Monthly subscription churn rate")
-def churn_rate() -> Stat:
+async def churn_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="2.1%")
 
 
 @page.table("Recent Transactions", description="Last 5 completed payments")
-def recent_transactions() -> Table:
+async def recent_transactions() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"id": "txn_98821", "user": "alice@example.com", "amount": "$99.00", "plan": "Pro", "date": "2026-05-30"},
@@ -42,7 +51,8 @@ def recent_transactions() -> Table:
 
 
 @page.table("Revenue by Plan", description="Breakdown of MRR by subscription tier")
-def revenue_by_plan() -> Table:
+async def revenue_by_plan() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"plan": "Starter", "subscribers": 1840, "mrr": "$26,680", "share": "31.6%"},
@@ -54,7 +64,8 @@ def revenue_by_plan() -> Table:
 
 
 @page.table("Recent Refunds", description="Latest refund requests processed")
-def recent_refunds() -> Table:
+async def recent_refunds() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"id": "ref_1044", "user": "unhappy@user.com", "amount": "$99.00", "reason": "not as described", "date": "2026-05-29"},
@@ -65,7 +76,8 @@ def recent_refunds() -> Table:
 
 
 @page.table("Monthly Revenue Trend", description="Revenue totals for the past 6 months")
-def monthly_trend() -> Table:
+async def monthly_trend() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"month": "December 2025", "revenue": "$71,200", "growth": "+4.1%"},

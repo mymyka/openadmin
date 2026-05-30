@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Users Tasks")
 
 
 @page.stat("Total Tasks", description="Total number of tasks across all users")
-def total_tasks() -> Stat:
+async def total_tasks() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=8_741)
 
 
 @page.stat("Completed Today", description="Tasks marked complete today")
-def completed_today() -> Stat:
+async def completed_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=312)
 
 
 @page.stat("Overdue Tasks", description="Tasks past their due date")
-def overdue_tasks() -> Stat:
+async def overdue_tasks() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=94)
 
 
 @page.stat("Completion Rate", description="Percentage of tasks completed this month")
-def completion_rate() -> Stat:
+async def completion_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="78.4%")
 
 
 @page.table("Recent Tasks", description="Latest tasks created across all users")
-def recent_tasks() -> Table:
+async def recent_tasks() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -67,7 +75,8 @@ def recent_tasks() -> Table:
 
 
 @page.table("Overdue Tasks", description="Tasks that have passed their due date")
-def overdue_task_list() -> Table:
+async def overdue_task_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -96,7 +105,8 @@ def overdue_task_list() -> Table:
 
 
 @page.table("Task Status Summary", description="Breakdown of all tasks by status")
-def task_status_summary() -> Table:
+async def task_status_summary() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"status": "completed", "count": 6820, "percentage": "78.0%"},

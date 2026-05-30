@@ -1,30 +1,38 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Notifications")
 
 
 @page.stat("Sent Today", description="Push and in-app notifications delivered today")
-def sent_today() -> Stat:
+async def sent_today() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=84_210)
 
 
 @page.stat("Open Rate", description="Notification open rate this week")
-def open_rate() -> Stat:
+async def open_rate() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value="21.4%")
 
 
 @page.stat("Opted-Out Users", description="Users who disabled all notifications")
-def opted_out() -> Stat:
+async def opted_out() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=2_840)
 
 
 @page.stat("Failed Deliveries", description="Notifications that failed to deliver today")
-def failed_deliveries() -> Stat:
+async def failed_deliveries() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=320)
 
 
 @page.table("Recent Broadcasts", description="Latest notifications sent to all or large user segments")
-def recent_broadcasts() -> Table:
+async def recent_broadcasts() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {
@@ -60,7 +68,8 @@ def recent_broadcasts() -> Table:
 
 
 @page.table("Delivery Failures", description="Notifications that could not be delivered")
-def delivery_failures() -> Table:
+async def delivery_failures() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"user": "user#8810", "channel": "push", "reason": "token expired", "notification": "New feature: Dark Mode", "date": "2026-05-30"},
@@ -71,7 +80,8 @@ def delivery_failures() -> Table:
 
 
 @page.table("Opt-Out Trends", description="Daily notification opt-outs over the past week")
-def opt_out_trends() -> Table:
+async def opt_out_trends() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"date": "2026-05-24", "opt_outs": 84, "opt_ins": 210},
@@ -86,7 +96,8 @@ def opt_out_trends() -> Table:
 
 
 @page.table("Notification Preferences", description="Breakdown of user channel preferences")
-def channel_preferences() -> Table:
+async def channel_preferences() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"channel": "in-app", "enabled": 12_840, "disabled": 1_542, "rate": "89.3%"},

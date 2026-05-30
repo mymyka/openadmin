@@ -1,25 +1,32 @@
+import asyncio
+import random
+
 from openadmin import AdminPage, Stat, Table
 
 page = AdminPage("Permissions")
 
 
 @page.stat("Total Roles", description="Defined roles in the system")
-def total_roles() -> Stat:
+async def total_roles() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=8)
 
 
 @page.stat("Admin Users", description="Users with admin-level access")
-def admin_users() -> Stat:
+async def admin_users() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=14)
 
 
 @page.stat("Pending Access Requests", description="Unreviewed role upgrade requests")
-def pending_requests() -> Stat:
+async def pending_requests() -> Stat:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=5)
 
 
 @page.table("Role Overview", description="All system roles and their assigned user counts")
-def role_overview() -> Table:
+async def role_overview() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"role": "superadmin", "users": 2, "can_delete": True, "can_ban": True, "can_export": True},
@@ -35,7 +42,8 @@ def role_overview() -> Table:
 
 
 @page.table("Admin Users", description="All users with admin-level privileges")
-def admin_users_list() -> Table:
+async def admin_users_list() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"user": "superadmin@platform.com", "role": "superadmin", "last_login": "2026-05-30", "mfa": True},
@@ -48,7 +56,8 @@ def admin_users_list() -> Table:
 
 
 @page.table("Pending Access Requests", description="Users requesting elevated permissions")
-def pending_access_requests() -> Table:
+async def pending_access_requests() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"user": "newmod@example.com", "current_role": "member", "requested_role": "moderator", "reason": "applying for mod team", "date": "2026-05-30"},
@@ -59,7 +68,8 @@ def pending_access_requests() -> Table:
 
 
 @page.table("Recent Role Changes", description="Role assignments and revocations in the last 30 days")
-def recent_role_changes() -> Table:
+async def recent_role_changes() -> Table:
+    await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
             {"user": "moderator3@platform.com", "change": "member → moderator", "changed_by": "superadmin", "date": "2026-05-29"},
