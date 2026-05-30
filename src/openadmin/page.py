@@ -2,8 +2,8 @@ from fastapi import APIRouter
 
 
 class AdminPage(APIRouter):
-    def __init__(self, name):
-        super().__init__()
+    def __init__(self, name: str):
+        super().__init__(prefix=f"/{name.lower().replace(' ', '-')}")
 
     def stat(
         self,
