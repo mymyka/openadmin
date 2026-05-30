@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from .types import Stat, Table
+
 
 class AdminPage(APIRouter):
     def __init__(self, name: str):
@@ -12,8 +14,7 @@ class AdminPage(APIRouter):
     ):
         kebab_name = name.lower().replace(" ", "-")
         return self.get(
-            f"/stat/{kebab_name}",
-            description=description,
+            f"/stat/{kebab_name}", description=description, response_model=Stat
         )
 
     def table(
@@ -25,4 +26,12 @@ class AdminPage(APIRouter):
         return self.get(
             f"/table/{kebab_name}",
             description=description,
+            response_model=Table,
+        )
+
+    def markdown(self, name: str):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.get(
+            f"/markdown/{kebab_name}",
+            response_model=str,
         )

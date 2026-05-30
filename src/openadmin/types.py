@@ -3,8 +3,8 @@ from typing import Dict, List
 from pydantic import BaseModel
 
 
-class Stat[T](BaseModel):
-    value: T
+class Stat(BaseModel):
+    value: str | bool | int | float
 
 
 class Table(BaseModel):
