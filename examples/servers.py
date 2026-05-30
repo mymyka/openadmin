@@ -76,14 +76,62 @@ async def node_status() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"node": "api-01", "status": "healthy", "cpu": "28%", "memory": "58%", "uptime": "14d 6h"},
-            {"node": "api-02", "status": "healthy", "cpu": "31%", "memory": "62%", "uptime": "14d 6h"},
-            {"node": "api-03", "status": "healthy", "cpu": "24%", "memory": "55%", "uptime": "14d 6h"},
-            {"node": "worker-01", "status": "healthy", "cpu": "44%", "memory": "70%", "uptime": "14d 6h"},
-            {"node": "worker-02", "status": "degraded", "cpu": "89%", "memory": "91%", "uptime": "14d 6h"},
-            {"node": "db-primary", "status": "healthy", "cpu": "18%", "memory": "74%", "uptime": "30d 2h"},
-            {"node": "db-replica", "status": "healthy", "cpu": "12%", "memory": "68%", "uptime": "30d 2h"},
-            {"node": "cache-01", "status": "healthy", "cpu": "8%", "memory": "42%", "uptime": "14d 6h"},
+            {
+                "node": "api-01",
+                "status": "healthy",
+                "cpu": "28%",
+                "memory": "58%",
+                "uptime": "14d 6h",
+            },
+            {
+                "node": "api-02",
+                "status": "healthy",
+                "cpu": "31%",
+                "memory": "62%",
+                "uptime": "14d 6h",
+            },
+            {
+                "node": "api-03",
+                "status": "healthy",
+                "cpu": "24%",
+                "memory": "55%",
+                "uptime": "14d 6h",
+            },
+            {
+                "node": "worker-01",
+                "status": "healthy",
+                "cpu": "44%",
+                "memory": "70%",
+                "uptime": "14d 6h",
+            },
+            {
+                "node": "worker-02",
+                "status": "degraded",
+                "cpu": "89%",
+                "memory": "91%",
+                "uptime": "14d 6h",
+            },
+            {
+                "node": "db-primary",
+                "status": "healthy",
+                "cpu": "18%",
+                "memory": "74%",
+                "uptime": "30d 2h",
+            },
+            {
+                "node": "db-replica",
+                "status": "healthy",
+                "cpu": "12%",
+                "memory": "68%",
+                "uptime": "30d 2h",
+            },
+            {
+                "node": "cache-01",
+                "status": "healthy",
+                "cpu": "8%",
+                "memory": "42%",
+                "uptime": "14d 6h",
+            },
         ]
     )
 
@@ -93,10 +141,34 @@ async def recent_deployments() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"version": "v2.14.1", "deployed_by": "ci-bot", "nodes": "all", "status": "success", "date": "2026-05-30 08:00"},
-            {"version": "v2.14.0", "deployed_by": "alice", "nodes": "api-*", "status": "success", "date": "2026-05-28 14:30"},
-            {"version": "v2.13.5", "deployed_by": "ci-bot", "nodes": "all", "status": "success", "date": "2026-05-25 09:00"},
-            {"version": "v2.13.4", "deployed_by": "bob", "nodes": "worker-*", "status": "rolled-back", "date": "2026-05-22 16:00"},
+            {
+                "version": "v2.14.1",
+                "deployed_by": "ci-bot",
+                "nodes": "all",
+                "status": "success",
+                "date": "2026-05-30 08:00",
+            },
+            {
+                "version": "v2.14.0",
+                "deployed_by": "alice",
+                "nodes": "api-*",
+                "status": "success",
+                "date": "2026-05-28 14:30",
+            },
+            {
+                "version": "v2.13.5",
+                "deployed_by": "ci-bot",
+                "nodes": "all",
+                "status": "success",
+                "date": "2026-05-25 09:00",
+            },
+            {
+                "version": "v2.13.4",
+                "deployed_by": "bob",
+                "nodes": "worker-*",
+                "status": "rolled-back",
+                "date": "2026-05-22 16:00",
+            },
         ]
     )
 
@@ -106,21 +178,58 @@ async def active_alerts() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"alert": "High CPU on worker-02", "severity": "warning", "node": "worker-02", "since": "2026-05-30 11:40"},
-            {"alert": "Disk > 80% on db-primary", "severity": "warning", "node": "db-primary", "since": "2026-05-29 08:00"},
+            {
+                "alert": "High CPU on worker-02",
+                "severity": "warning",
+                "node": "worker-02",
+                "since": "2026-05-30 11:40",
+            },
+            {
+                "alert": "Disk > 80% on db-primary",
+                "severity": "warning",
+                "node": "db-primary",
+                "since": "2026-05-29 08:00",
+            },
         ]
     )
 
 
-@page.table("Network Traffic", description="Inbound and outbound traffic by node (last hour)")
+@page.table(
+    "Network Traffic", description="Inbound and outbound traffic by node (last hour)"
+)
 async def network_traffic() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"node": "api-01", "inbound_mb": 1_240, "outbound_mb": 3_820, "connections": 8_400},
-            {"node": "api-02", "inbound_mb": 1_180, "outbound_mb": 3_610, "connections": 8_100},
-            {"node": "api-03", "inbound_mb": 1_090, "outbound_mb": 3_390, "connections": 7_800},
-            {"node": "worker-01", "inbound_mb": 480, "outbound_mb": 210, "connections": 120},
-            {"node": "worker-02", "inbound_mb": 520, "outbound_mb": 190, "connections": 118},
+            {
+                "node": "api-01",
+                "inbound_mb": 1_240,
+                "outbound_mb": 3_820,
+                "connections": 8_400,
+            },
+            {
+                "node": "api-02",
+                "inbound_mb": 1_180,
+                "outbound_mb": 3_610,
+                "connections": 8_100,
+            },
+            {
+                "node": "api-03",
+                "inbound_mb": 1_090,
+                "outbound_mb": 3_390,
+                "connections": 7_800,
+            },
+            {
+                "node": "worker-01",
+                "inbound_mb": 480,
+                "outbound_mb": 210,
+                "connections": 120,
+            },
+            {
+                "node": "worker-02",
+                "inbound_mb": 520,
+                "outbound_mb": 190,
+                "connections": 118,
+            },
         ]
     )

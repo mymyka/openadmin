@@ -116,34 +116,94 @@ async def delivery_failures() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"email": "old@deactivated.com", "type": "hard-bounce", "campaign": "May Product Update", "date": "2026-05-28"},
-            {"email": "full@inbox.net", "type": "soft-bounce", "campaign": "May Product Update", "date": "2026-05-28"},
-            {"email": "noreply@block.org", "type": "blocked", "campaign": "Weekly Digest #21", "date": "2026-05-24"},
-            {"email": "typo@@example.com", "type": "invalid", "campaign": "May Product Update", "date": "2026-05-28"},
+            {
+                "email": "old@deactivated.com",
+                "type": "hard-bounce",
+                "campaign": "May Product Update",
+                "date": "2026-05-28",
+            },
+            {
+                "email": "full@inbox.net",
+                "type": "soft-bounce",
+                "campaign": "May Product Update",
+                "date": "2026-05-28",
+            },
+            {
+                "email": "noreply@block.org",
+                "type": "blocked",
+                "campaign": "Weekly Digest #21",
+                "date": "2026-05-24",
+            },
+            {
+                "email": "typo@@example.com",
+                "type": "invalid",
+                "campaign": "May Product Update",
+                "date": "2026-05-28",
+            },
         ]
     )
 
 
-@page.table("Scheduled Campaigns", description="Upcoming email campaigns queued for delivery")
+@page.table(
+    "Scheduled Campaigns", description="Upcoming email campaigns queued for delivery"
+)
 async def scheduled_campaigns() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"campaign": "June Newsletter", "recipients": 21_400, "scheduled": "2026-06-01 09:00", "status": "queued"},
-            {"campaign": "Promo: Summer Sale", "recipients": 18_900, "scheduled": "2026-06-05 10:00", "status": "draft"},
-            {"campaign": "Onboarding Day 7", "recipients": 840, "scheduled": "2026-06-02 08:00", "status": "queued"},
+            {
+                "campaign": "June Newsletter",
+                "recipients": 21_400,
+                "scheduled": "2026-06-01 09:00",
+                "status": "queued",
+            },
+            {
+                "campaign": "Promo: Summer Sale",
+                "recipients": 18_900,
+                "scheduled": "2026-06-05 10:00",
+                "status": "draft",
+            },
+            {
+                "campaign": "Onboarding Day 7",
+                "recipients": 840,
+                "scheduled": "2026-06-02 08:00",
+                "status": "queued",
+            },
         ]
     )
 
 
-@page.table("Top Links Clicked", description="Most-clicked links across all campaigns this month")
+@page.table(
+    "Top Links Clicked",
+    description="Most-clicked links across all campaigns this month",
+)
 async def top_links() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"url": "/pricing", "clicks": 4_820, "campaign": "Feature Announcement: Exports", "ctr": "21.8%"},
-            {"url": "/blog/new-exports", "clicks": 3_210, "campaign": "Feature Announcement: Exports", "ctr": "14.5%"},
-            {"url": "/changelog", "clicks": 2_108, "campaign": "May Product Update", "ctr": "11.4%"},
-            {"url": "/dashboard", "clicks": 1_840, "campaign": "Weekly Digest #21", "ctr": "14.4%"},
+            {
+                "url": "/pricing",
+                "clicks": 4_820,
+                "campaign": "Feature Announcement: Exports",
+                "ctr": "21.8%",
+            },
+            {
+                "url": "/blog/new-exports",
+                "clicks": 3_210,
+                "campaign": "Feature Announcement: Exports",
+                "ctr": "14.5%",
+            },
+            {
+                "url": "/changelog",
+                "clicks": 2_108,
+                "campaign": "May Product Update",
+                "ctr": "11.4%",
+            },
+            {
+                "url": "/dashboard",
+                "clicks": 1_840,
+                "campaign": "Weekly Digest #21",
+                "ctr": "14.4%",
+            },
         ]
     )

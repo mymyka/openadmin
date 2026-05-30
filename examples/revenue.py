@@ -73,11 +73,41 @@ async def recent_transactions() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"id": "txn_98821", "user": "alice@example.com", "amount": "$99.00", "plan": "Pro", "date": "2026-05-30"},
-            {"id": "txn_98820", "user": "bob@corp.com", "amount": "$299.00", "plan": "Business", "date": "2026-05-30"},
-            {"id": "txn_98819", "user": "carol@startup.io", "amount": "$29.00", "plan": "Starter", "date": "2026-05-30"},
-            {"id": "txn_98818", "user": "dan@example.net", "amount": "$99.00", "plan": "Pro", "date": "2026-05-29"},
-            {"id": "txn_98817", "user": "eva@lab.dev", "amount": "$599.00", "plan": "Enterprise", "date": "2026-05-29"},
+            {
+                "id": "txn_98821",
+                "user": "alice@example.com",
+                "amount": "$99.00",
+                "plan": "Pro",
+                "date": "2026-05-30",
+            },
+            {
+                "id": "txn_98820",
+                "user": "bob@corp.com",
+                "amount": "$299.00",
+                "plan": "Business",
+                "date": "2026-05-30",
+            },
+            {
+                "id": "txn_98819",
+                "user": "carol@startup.io",
+                "amount": "$29.00",
+                "plan": "Starter",
+                "date": "2026-05-30",
+            },
+            {
+                "id": "txn_98818",
+                "user": "dan@example.net",
+                "amount": "$99.00",
+                "plan": "Pro",
+                "date": "2026-05-29",
+            },
+            {
+                "id": "txn_98817",
+                "user": "eva@lab.dev",
+                "amount": "$599.00",
+                "plan": "Enterprise",
+                "date": "2026-05-29",
+            },
         ]
     )
 
@@ -87,9 +117,19 @@ async def revenue_by_plan() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"plan": "Starter", "subscribers": 1840, "mrr": "$26,680", "share": "31.6%"},
+            {
+                "plan": "Starter",
+                "subscribers": 1840,
+                "mrr": "$26,680",
+                "share": "31.6%",
+            },
             {"plan": "Pro", "subscribers": 920, "mrr": "$36,080", "share": "42.8%"},
-            {"plan": "Business", "subscribers": 210, "mrr": "$15,680", "share": "18.6%"},
+            {
+                "plan": "Business",
+                "subscribers": 210,
+                "mrr": "$15,680",
+                "share": "18.6%",
+            },
             {"plan": "Enterprise", "subscribers": 24, "mrr": "$5,880", "share": "7.0%"},
         ]
     )
@@ -100,9 +140,27 @@ async def recent_refunds() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"id": "ref_1044", "user": "unhappy@user.com", "amount": "$99.00", "reason": "not as described", "date": "2026-05-29"},
-            {"id": "ref_1043", "user": "cancel@corp.com", "amount": "$299.00", "reason": "cancellation", "date": "2026-05-28"},
-            {"id": "ref_1042", "user": "duplicate@pay.com", "amount": "$29.00", "reason": "duplicate charge", "date": "2026-05-27"},
+            {
+                "id": "ref_1044",
+                "user": "unhappy@user.com",
+                "amount": "$99.00",
+                "reason": "not as described",
+                "date": "2026-05-29",
+            },
+            {
+                "id": "ref_1043",
+                "user": "cancel@corp.com",
+                "amount": "$299.00",
+                "reason": "cancellation",
+                "date": "2026-05-28",
+            },
+            {
+                "id": "ref_1042",
+                "user": "duplicate@pay.com",
+                "amount": "$29.00",
+                "reason": "duplicate charge",
+                "date": "2026-05-27",
+            },
         ]
     )
 

@@ -147,11 +147,41 @@ async def audit_log() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"time": "2026-05-30 12:31", "admin": "superadmin", "action": "ban_user", "target": "spammer@example.com", "ip": "192.168.1.1"},
-            {"time": "2026-05-30 11:18", "admin": "moderator1", "action": "delete_post", "target": "post#8821", "ip": "10.0.0.4"},
-            {"time": "2026-05-30 10:05", "admin": "superadmin", "action": "update_settings", "target": "maintenance_mode", "ip": "192.168.1.1"},
-            {"time": "2026-05-29 18:44", "admin": "moderator2", "action": "resolve_ticket", "target": "ticket#1034", "ip": "10.0.0.7"},
-            {"time": "2026-05-29 15:22", "admin": "superadmin", "action": "create_admin", "target": "moderator3", "ip": "192.168.1.1"},
+            {
+                "time": "2026-05-30 12:31",
+                "admin": "superadmin",
+                "action": "ban_user",
+                "target": "spammer@example.com",
+                "ip": "192.168.1.1",
+            },
+            {
+                "time": "2026-05-30 11:18",
+                "admin": "moderator1",
+                "action": "delete_post",
+                "target": "post#8821",
+                "ip": "10.0.0.4",
+            },
+            {
+                "time": "2026-05-30 10:05",
+                "admin": "superadmin",
+                "action": "update_settings",
+                "target": "maintenance_mode",
+                "ip": "192.168.1.1",
+            },
+            {
+                "time": "2026-05-29 18:44",
+                "admin": "moderator2",
+                "action": "resolve_ticket",
+                "target": "ticket#1034",
+                "ip": "10.0.0.7",
+            },
+            {
+                "time": "2026-05-29 15:22",
+                "admin": "superadmin",
+                "action": "create_admin",
+                "target": "moderator3",
+                "ip": "192.168.1.1",
+            },
         ]
     )
 
@@ -161,10 +191,35 @@ async def errors_by_service() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"service": "api", "errors": 84, "warnings": 410, "last_error": "2026-05-30 12:48"},
-            {"service": "mailer", "errors": 32, "warnings": 90, "last_error": "2026-05-30 10:30"},
-            {"service": "worker", "errors": 14, "warnings": 210, "last_error": "2026-05-30 12:21"},
-            {"service": "cdn", "errors": 8, "warnings": 94, "last_error": "2026-05-30 09:14"},
-            {"service": "payment", "errors": 4, "warnings": 26, "last_error": "2026-05-29 08:10"},
+            {
+                "service": "api",
+                "errors": 84,
+                "warnings": 410,
+                "last_error": "2026-05-30 12:48",
+            },
+            {
+                "service": "mailer",
+                "errors": 32,
+                "warnings": 90,
+                "last_error": "2026-05-30 10:30",
+            },
+            {
+                "service": "worker",
+                "errors": 14,
+                "warnings": 210,
+                "last_error": "2026-05-30 12:21",
+            },
+            {
+                "service": "cdn",
+                "errors": 8,
+                "warnings": 94,
+                "last_error": "2026-05-30 09:14",
+            },
+            {
+                "service": "payment",
+                "errors": 4,
+                "warnings": 26,
+                "last_error": "2026-05-29 08:10",
+            },
         ]
     )

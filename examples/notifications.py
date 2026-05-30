@@ -59,13 +59,18 @@ async def opted_out() -> Stat:
     return Stat(value=2_840)
 
 
-@page.stat("Failed Deliveries", description="Notifications that failed to deliver today")
+@page.stat(
+    "Failed Deliveries", description="Notifications that failed to deliver today"
+)
 async def failed_deliveries() -> Stat:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Stat(value=320)
 
 
-@page.table("Recent Broadcasts", description="Latest notifications sent to all or large user segments")
+@page.table(
+    "Recent Broadcasts",
+    description="Latest notifications sent to all or large user segments",
+)
 async def recent_broadcasts() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
@@ -102,19 +107,41 @@ async def recent_broadcasts() -> Table:
     )
 
 
-@page.table("Delivery Failures", description="Notifications that could not be delivered")
+@page.table(
+    "Delivery Failures", description="Notifications that could not be delivered"
+)
 async def delivery_failures() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"user": "user#8810", "channel": "push", "reason": "token expired", "notification": "New feature: Dark Mode", "date": "2026-05-30"},
-            {"user": "user#4221", "channel": "push", "reason": "device unregistered", "notification": "New feature: Dark Mode", "date": "2026-05-30"},
-            {"user": "user#1090", "channel": "email", "reason": "invalid address", "notification": "Weekly summary", "date": "2026-05-29"},
+            {
+                "user": "user#8810",
+                "channel": "push",
+                "reason": "token expired",
+                "notification": "New feature: Dark Mode",
+                "date": "2026-05-30",
+            },
+            {
+                "user": "user#4221",
+                "channel": "push",
+                "reason": "device unregistered",
+                "notification": "New feature: Dark Mode",
+                "date": "2026-05-30",
+            },
+            {
+                "user": "user#1090",
+                "channel": "email",
+                "reason": "invalid address",
+                "notification": "Weekly summary",
+                "date": "2026-05-29",
+            },
         ]
     )
 
 
-@page.table("Opt-Out Trends", description="Daily notification opt-outs over the past week")
+@page.table(
+    "Opt-Out Trends", description="Daily notification opt-outs over the past week"
+)
 async def opt_out_trends() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
@@ -130,12 +157,19 @@ async def opt_out_trends() -> Table:
     )
 
 
-@page.table("Notification Preferences", description="Breakdown of user channel preferences")
+@page.table(
+    "Notification Preferences", description="Breakdown of user channel preferences"
+)
 async def channel_preferences() -> Table:
     await asyncio.sleep(random.uniform(0.05, 0.3))
     return Table(
         data=[
-            {"channel": "in-app", "enabled": 12_840, "disabled": 1_542, "rate": "89.3%"},
+            {
+                "channel": "in-app",
+                "enabled": 12_840,
+                "disabled": 1_542,
+                "rate": "89.3%",
+            },
             {"channel": "push", "enabled": 9_210, "disabled": 5_172, "rate": "64.0%"},
             {"channel": "email", "enabled": 11_400, "disabled": 2_982, "rate": "79.3%"},
             {"channel": "sms", "enabled": 3_820, "disabled": 10_562, "rate": "26.6%"},
