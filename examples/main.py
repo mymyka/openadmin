@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from openadmin import AdminPanel
 
@@ -8,6 +9,12 @@ from .users_tasks import page as user_tasks_admin
 from .welcome_admin import page as welcome_admin
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 admin_panel = AdminPanel()
 
 admin_panel.include_page(posts_admin, tags=["Posts"])
