@@ -4,27 +4,27 @@ page = AdminPage("Users")
 
 
 @page.stat("Total Users", description="Total number of registered users")
-def total_users() -> Stat[int]:
+def total_users() -> Stat:
     return Stat(value=14_382)
 
 
 @page.stat("Active Users", description="Users active in the last 30 days")
-def active_users() -> Stat[int]:
+def active_users() -> Stat:
     return Stat(value=9_104)
 
 
 @page.stat("New Today", description="Users who registered today")
-def new_today() -> Stat[int]:
+def new_today() -> Stat:
     return Stat(value=47)
 
 
 @page.stat("Premium Users", description="Users on a paid plan")
-def premium_users() -> Stat[int]:
+def premium_users() -> Stat:
     return Stat(value=2_891)
 
 
 @page.stat("Banned Users", description="Accounts currently suspended")
-def banned_users() -> Stat[int]:
+def banned_users() -> Stat:
     return Stat(value=213)
 
 

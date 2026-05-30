@@ -4,22 +4,22 @@ page = AdminPage("Users Tasks")
 
 
 @page.stat("Total Tasks", description="Total number of tasks across all users")
-def total_tasks() -> Stat[int]:
+def total_tasks() -> Stat:
     return Stat(value=8_741)
 
 
 @page.stat("Completed Today", description="Tasks marked complete today")
-def completed_today() -> Stat[int]:
+def completed_today() -> Stat:
     return Stat(value=312)
 
 
 @page.stat("Overdue Tasks", description="Tasks past their due date")
-def overdue_tasks() -> Stat[int]:
+def overdue_tasks() -> Stat:
     return Stat(value=94)
 
 
 @page.stat("Completion Rate", description="Percentage of tasks completed this month")
-def completion_rate() -> Stat[str]:
+def completion_rate() -> Stat:
     return Stat(value="78.4%")
 
 

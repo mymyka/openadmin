@@ -4,27 +4,27 @@ page = AdminPage("Posts")
 
 
 @page.stat("Total Posts", description="All posts ever created")
-def total_posts() -> Stat[int]:
+def total_posts() -> Stat:
     return Stat(value=58_741)
 
 
 @page.stat("Published", description="Posts currently live")
-def published_posts() -> Stat[int]:
+def published_posts() -> Stat:
     return Stat(value=51_209)
 
 
 @page.stat("Drafts", description="Posts saved but not published")
-def draft_posts() -> Stat[int]:
+def draft_posts() -> Stat:
     return Stat(value=5_318)
 
 
 @page.stat("Total Views", description="Cumulative views across all posts")
-def total_views() -> Stat[int]:
+def total_views() -> Stat:
     return Stat(value=4_820_113)
 
 
 @page.stat("Avg Views per Post", description="Mean views across published posts")
-def avg_views() -> Stat[float]:
+def avg_views() -> Stat:
     return Stat(value=94.1)
 
 

@@ -3,23 +3,39 @@ from openadmin import AdminPage, Stat, Table
 page = AdminPage("Welcome to admin")
 
 
+@page.markdown("Overview")
+def overview() -> str:
+    return """
+# Welcome to the Admin Panel
+
+Use this panel to monitor platform health, review recent activity, and manage your system.
+
+## Quick Links
+- **Users** — manage accounts, roles, and bans
+- **Posts** — moderate content and track engagement
+- **Tasks** — monitor user task completion across the platform
+
+> All times are shown in UTC.
+"""
+
+
 @page.stat("Total Users", description="All registered users on the platform")
-def total_users() -> Stat[int]:
+def total_users() -> Stat:
     return Stat(value=14_382)
 
 
 @page.stat("Active Sessions", description="Users currently logged in")
-def active_sessions() -> Stat[int]:
+def active_sessions() -> Stat:
     return Stat(value=203)
 
 
 @page.stat("Open Issues", description="Unresolved support tickets")
-def open_issues() -> Stat[int]:
+def open_issues() -> Stat:
     return Stat(value=17)
 
 
 @page.stat("Server Uptime", description="System uptime since last restart")
-def server_uptime() -> Stat[str]:
+def server_uptime() -> Stat:
     return Stat(value="14d 6h 42m")
 
 
