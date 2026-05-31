@@ -26,6 +26,7 @@ def _run(fn):
 
 # ── Schema ─────────────────────────────────────────────────────────────────────
 
+
 def _create_schema() -> None:
     conn = _get_conn()
     with conn:
@@ -63,12 +64,14 @@ def _create_schema() -> None:
 
 # ── Query helpers ───────────────────────────────────────────────────────────────
 
+
 async def fetchall(sql: str, params: tuple = ()) -> list[dict]:
     def _run_query():
         conn = _get_conn()
         rows = conn.execute(sql, params).fetchall()
         conn.close()
         return [dict(r) for r in rows]
+
     return await asyncio.to_thread(_run_query)
 
 
@@ -78,11 +81,13 @@ async def fetchone(sql: str, params: tuple = ()) -> dict | None:
         row = conn.execute(sql, params).fetchone()
         conn.close()
         return dict(row) if row else None
+
     return await asyncio.to_thread(_run_query)
 
 
 async def execute(sql: str, params: tuple = ()) -> int:
     """Execute a write statement, return lastrowid."""
+
     def _run_exec():
         conn = _get_conn()
         with conn:
@@ -90,6 +95,7 @@ async def execute(sql: str, params: tuple = ()) -> int:
             rowid = cur.lastrowid
         conn.close()
         return rowid
+
     return await asyncio.to_thread(_run_exec)
 
 

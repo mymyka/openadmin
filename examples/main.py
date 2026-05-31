@@ -10,7 +10,9 @@ from .users import page as users_admin
 from .welcome_admin import page as welcome_admin
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
+app.mount(
+    "/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

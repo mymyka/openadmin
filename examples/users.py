@@ -212,7 +212,14 @@ async def _insert_user(req: CreateUserReq, role: str) -> None:
     try:
         await db.execute(
             "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
-            (req.name, req.email, req.plan, int(req.active), role, date.today().isoformat()),
+            (
+                req.name,
+                req.email,
+                req.plan,
+                int(req.active),
+                role,
+                date.today().isoformat(),
+            ),
         )
     except sqlite3.IntegrityError:
         raise HTTPException(status_code=400, detail="Email already in use")
