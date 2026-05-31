@@ -1,7 +1,9 @@
 import random
+from datetime import date
 
 from fastapi import HTTPException, Request
 
+from examples.req import CreateUserReq
 from openadmin import AdminPage, PaginationParamsDep, Stat, Table
 
 from . import db
@@ -46,7 +48,9 @@ async def delete_user(id: int) -> None:
     await db.execute("DELETE FROM users WHERE id = ?", (id,))
 
 
-@page.action_patch("Delete document", description="Remove the document attached to a user")
+@page.action_patch(
+    "Delete document", description="Remove the document attached to a user"
+)
 async def delete_document(id: int) -> None:
     row = await db.fetchone("SELECT id FROM users WHERE id = ?", (id,))
     if not row:
@@ -61,7 +65,9 @@ async def refresh_avatar(id: int) -> None:
         raise HTTPException(status_code=404, detail="User not found")
     current = row.get("avatar")
     choices = [a for a in _AVATARS if a != current] or _AVATARS
-    await db.execute("UPDATE users SET avatar = ? WHERE id = ?", (random.choice(choices), id))
+    await db.execute(
+        "UPDATE users SET avatar = ? WHERE id = ?", (random.choice(choices), id)
+    )
 
 
 @page.action_post("Ban user", description="Move user to banned list")
@@ -199,3 +205,27 @@ async def role_distribution() -> Table:
         }
     )
     return Table(data=rows)
+
+
+@page.form_post("Create user", description="Create a regular user")
+async def create_user(req: CreateUserReq) -> None:
+    await db.execute(
+        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
+        (req.name, req.email, req.plan, int(req.active), "free", date.today().isoformat()),
+    )
+
+
+@page.form_post("Create moderator", description="Create a moderator account")
+async def create_moderator(req: CreateUserReq) -> None:
+    await db.execute(
+        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
+        (req.name, req.email, req.plan, int(req.active), "moderator", date.today().isoformat()),
+    )
+
+
+@page.form_post("Create admin", description="Create an admin account")
+async def create_admin(req: CreateUserReq) -> None:
+    await db.execute(
+        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
+        (req.name, req.email, req.plan, int(req.active), "admin", date.today().isoformat()),
+    )

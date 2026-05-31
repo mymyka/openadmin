@@ -90,3 +90,47 @@ class AdminPage(APIRouter):
             f"/action/{kebab_name}",
             description=description,
         )
+
+    def form_post(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.post(
+            f"/form/{kebab_name}",
+            description=description,
+        )
+
+    def form_put(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.put(
+            f"/form/{kebab_name}",
+            description=description,
+        )
+
+    def form_patch(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.patch(
+            f"/form/{kebab_name}",
+            description=description,
+        )
+
+    def form_delete(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.delete(
+            f"/form/{kebab_name}",
+            description=description,
+        )
