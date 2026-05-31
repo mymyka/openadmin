@@ -13,7 +13,7 @@ def pagination_params(
 
 
 def get_search_query(
-    search: str | None = Query(min_length=1, description="Search query"),
+    search: str | None = Query(None, min_length=1, description="Search query"),
 ) -> str | None:
     return search
 

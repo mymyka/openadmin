@@ -88,11 +88,20 @@ async def user_list(
     req: Request, pagination: PaginationParamsDep, search: SearchQueryDep
 ) -> Table:
     offset = pagination.page * pagination.per_page
-    rows = await db.fetchall(
-        "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users ORDER BY id LIMIT ? OFFSET ?",
-        (pagination.per_page, offset),
-    )
-    total = await db.count("users")
+    if search:
+        pattern = f"%{search}%"
+        rows = await db.fetchall(
+            "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users"
+            " WHERE name LIKE ? OR email LIKE ? ORDER BY id LIMIT ? OFFSET ?",
+            (pattern, pattern, pagination.per_page, offset),
+        )
+        total = await db.count("users", "name LIKE ? OR email LIKE ?", (pattern, pattern))
+    else:
+        rows = await db.fetchall(
+            "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users ORDER BY id LIMIT ? OFFSET ?",
+            (pagination.per_page, offset),
+        )
+        total = await db.count("users")
     base_url = str(req.base_url).rstrip("/")
     for row in rows:
         row["active"] = bool(row["active"])
@@ -126,13 +135,22 @@ async def user_list(
 
 
 @page.table("Recent Signups", description="Users who registered in the last 7 days")
-async def recent_signups(pagination: PaginationParamsDep) -> Table:
+async def recent_signups(pagination: PaginationParamsDep, search: SearchQueryDep) -> Table:
     offset = pagination.page * pagination.per_page
-    rows = await db.fetchall(
-        "SELECT id, name, email, registered FROM users "
-        "WHERE registered >= '2026-05-24' ORDER BY registered DESC LIMIT ? OFFSET ?",
-        (pagination.per_page, offset),
-    )
+    if search:
+        pattern = f"%{search}%"
+        rows = await db.fetchall(
+            "SELECT id, name, email, registered FROM users"
+            " WHERE registered >= '2026-05-24' AND (name LIKE ? OR email LIKE ?)"
+            " ORDER BY registered DESC LIMIT ? OFFSET ?",
+            (pattern, pattern, pagination.per_page, offset),
+        )
+    else:
+        rows = await db.fetchall(
+            "SELECT id, name, email, registered FROM users"
+            " WHERE registered >= '2026-05-24' ORDER BY registered DESC LIMIT ? OFFSET ?",
+            (pagination.per_page, offset),
+        )
     return Table(data=rows)
 
 
@@ -180,12 +198,20 @@ async def top_users() -> Table:
 
 
 @page.table("Banned Users", description="Suspended accounts with reasons")
-async def banned_user_list(req: Request, pagination: PaginationParamsDep) -> Table:
+async def banned_user_list(req: Request, pagination: PaginationParamsDep, search: SearchQueryDep) -> Table:
     offset = pagination.page * pagination.per_page
-    rows = await db.fetchall(
-        "SELECT * FROM banned_users ORDER BY id LIMIT ? OFFSET ?",
-        (pagination.per_page, offset),
-    )
+    if search:
+        pattern = f"%{search}%"
+        rows = await db.fetchall(
+            "SELECT * FROM banned_users WHERE name LIKE ? OR email LIKE ? OR reason LIKE ?"
+            " ORDER BY id LIMIT ? OFFSET ?",
+            (pattern, pattern, pattern, pagination.per_page, offset),
+        )
+    else:
+        rows = await db.fetchall(
+            "SELECT * FROM banned_users ORDER BY id LIMIT ? OFFSET ?",
+            (pagination.per_page, offset),
+        )
     return Table(data=rows)
 
 
