@@ -12,4 +12,11 @@ def pagination_params(
     return PaginationParams(page=page, per_page=per_page)
 
 
+def get_search_query(
+    search: str | None = Query(min_length=1, description="Search query"),
+) -> str | None:
+    return search
+
+
 PaginationParamsDep = Annotated[PaginationParams, Depends(pagination_params)]
+SearchQueryDep = Annotated[str | None, Depends(get_search_query)]

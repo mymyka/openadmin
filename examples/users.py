@@ -5,7 +5,7 @@ from datetime import date
 from fastapi import HTTPException, Request
 
 from examples.req import CreateUserReq
-from openadmin import AdminPage, PaginationParamsDep, Stat, Table
+from openadmin import AdminPage, PaginationParamsDep, SearchQueryDep, Stat, Table
 
 from . import db
 
@@ -84,7 +84,9 @@ async def ban_user(id: int) -> None:
 
 
 @page.table("User List", description="All registered users")
-async def user_list(req: Request, pagination: PaginationParamsDep) -> Table:
+async def user_list(
+    req: Request, pagination: PaginationParamsDep, search: SearchQueryDep
+) -> Table:
     offset = pagination.page * pagination.per_page
     rows = await db.fetchall(
         "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users ORDER BY id LIMIT ? OFFSET ?",

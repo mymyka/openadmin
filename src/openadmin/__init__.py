@@ -1,4 +1,4 @@
-from .deps import PaginationParamsDep
+from .deps import PaginationParamsDep, SearchQueryDep
 from .page import AdminPage
 from .panel import AdminPanel
 from .types import Action, PaginationParams, Stat, Table
@@ -11,4 +11,5 @@ __all__ = [
     "Table",
     "PaginationParams",
     "PaginationParamsDep",
+    "SearchQueryDep",
 ]
