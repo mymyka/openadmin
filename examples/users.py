@@ -1,4 +1,5 @@
 import random
+import sqlite3
 from datetime import date
 
 from fastapi import HTTPException, Request
@@ -207,25 +208,26 @@ async def role_distribution() -> Table:
     return Table(data=rows)
 
 
+async def _insert_user(req: CreateUserReq, role: str) -> None:
+    try:
+        await db.execute(
+            "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
+            (req.name, req.email, req.plan, int(req.active), role, date.today().isoformat()),
+        )
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail="Email already in use")
+
+
 @page.form_post("Create user", description="Create a regular user")
 async def create_user(req: CreateUserReq) -> None:
-    await db.execute(
-        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
-        (req.name, req.email, req.plan, int(req.active), "free", date.today().isoformat()),
-    )
+    await _insert_user(req, "free")
 
 
 @page.form_post("Create moderator", description="Create a moderator account")
 async def create_moderator(req: CreateUserReq) -> None:
-    await db.execute(
-        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
-        (req.name, req.email, req.plan, int(req.active), "moderator", date.today().isoformat()),
-    )
+    await _insert_user(req, "moderator")
 
 
 @page.form_post("Create admin", description="Create an admin account")
 async def create_admin(req: CreateUserReq) -> None:
-    await db.execute(
-        "INSERT INTO users (name, email, plan, active, role, registered) VALUES (?,?,?,?,?,?)",
-        (req.name, req.email, req.plan, int(req.active), "admin", date.today().isoformat()),
-    )
+    await _insert_user(req, "admin")
