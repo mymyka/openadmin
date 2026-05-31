@@ -95,10 +95,16 @@ class AdminPage(APIRouter):
         self,
         name: str,
         description: str,
+        hide: bool = False,
     ):
         kebab_name = name.lower().replace(" ", "-")
+        hide_path = ""
+
+        if hide:
+            hide_path = "__hide__/"
+
         return self.post(
-            f"/form/{kebab_name}",
+            f"/form/{hide_path}{kebab_name}",
             description=description,
         )
 
@@ -106,10 +112,16 @@ class AdminPage(APIRouter):
         self,
         name: str,
         description: str,
+        hide: bool = False,
     ):
         kebab_name = name.lower().replace(" ", "-")
+        hide_path = ""
+
+        if hide:
+            hide_path = "__hide__/"
+
         return self.put(
-            f"/form/{kebab_name}",
+            f"/form/{hide_path}{kebab_name}",
             description=description,
         )
 
@@ -117,10 +129,16 @@ class AdminPage(APIRouter):
         self,
         name: str,
         description: str,
+        hide: bool = False,
     ):
         kebab_name = name.lower().replace(" ", "-")
+        hide_path = ""
+
+        if hide:
+            hide_path = "__hide__/"
+
         return self.patch(
-            f"/form/{kebab_name}",
+            f"/form/{hide_path}{kebab_name}",
             description=description,
         )
 
@@ -128,9 +146,15 @@ class AdminPage(APIRouter):
         self,
         name: str,
         description: str,
+        hide: bool = False,
     ):
         kebab_name = name.lower().replace(" ", "-")
+        hide_path = ""
+
+        if hide:
+            hide_path = "__hide__/"
+
         return self.delete(
-            f"/form/{kebab_name}",
+            f"/form/{hide_path}{kebab_name}",
             description=description,
         )
