@@ -38,6 +38,11 @@ class Table(BaseModel):
         return self
 
 
+class AreaChart(BaseModel):
+    data: List[Dict[str, int | float]] = Field(default=[])
+    config: Dict[str, Dict[Literal["label", "color"]]]
+
+
 class PaginationParams(BaseModel):
     page: int = Query(ge=0, description="Page number")
     per_page: int = Query(ge=1, description="Number of items per page")
