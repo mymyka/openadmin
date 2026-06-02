@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .types import AreaChart, Stat, Table
+from .types import AreaChart, BarChart, LineChart, PieChart, Stat, Table
 
 
 class AdminPage(APIRouter):
@@ -169,4 +169,40 @@ class AdminPage(APIRouter):
             f"/area-chart/{kebab_name}",
             description=description,
             response_model=AreaChart,
+        )
+
+    def bar_chart(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.get(
+            f"/bar-chart/{kebab_name}",
+            description=description,
+            response_model=BarChart,
+        )
+
+    def line_chart(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.get(
+            f"/line-chart/{kebab_name}",
+            description=description,
+            response_model=LineChart,
+        )
+
+    def pie_chart(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.get(
+            f"/pie-chart/{kebab_name}",
+            description=description,
+            response_model=PieChart,
         )

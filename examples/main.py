@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from openadmin import AdminPanel
 
+from .analytics import page as analytics_admin
 from .users import page as users_admin
 from .welcome_admin import page as welcome_admin
 
@@ -23,6 +24,7 @@ admin_panel = AdminPanel()
 
 admin_panel.include_page(welcome_admin)
 admin_panel.include_page(users_admin, tags=["Users"])
+admin_panel.include_page(analytics_admin, tags=["Analytics"])
 
 
 app.mount("/admin", admin_panel)

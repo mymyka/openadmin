@@ -95,7 +95,9 @@ async def user_list(
             " WHERE name LIKE ? OR email LIKE ? ORDER BY id LIMIT ? OFFSET ?",
             (pattern, pattern, pagination.per_page, offset),
         )
-        total = await db.count("users", "name LIKE ? OR email LIKE ?", (pattern, pattern))
+        total = await db.count(
+            "users", "name LIKE ? OR email LIKE ?", (pattern, pattern)
+        )
     else:
         rows = await db.fetchall(
             "SELECT id, name, email, plan, active, role, registered, document, avatar FROM users ORDER BY id LIMIT ? OFFSET ?",
@@ -135,7 +137,9 @@ async def user_list(
 
 
 @page.table("Recent Signups", description="Users who registered in the last 7 days")
-async def recent_signups(pagination: PaginationParamsDep, search: SearchQueryDep) -> Table:
+async def recent_signups(
+    pagination: PaginationParamsDep, search: SearchQueryDep
+) -> Table:
     offset = pagination.page * pagination.per_page
     if search:
         pattern = f"%{search}%"
@@ -198,7 +202,9 @@ async def top_users() -> Table:
 
 
 @page.table("Banned Users", description="Suspended accounts with reasons")
-async def banned_user_list(req: Request, pagination: PaginationParamsDep, search: SearchQueryDep) -> Table:
+async def banned_user_list(
+    req: Request, pagination: PaginationParamsDep, search: SearchQueryDep
+) -> Table:
     offset = pagination.page * pagination.per_page
     if search:
         pattern = f"%{search}%"
