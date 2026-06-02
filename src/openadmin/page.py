@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .types import Stat, Table
+from .types import AreaChart, Stat, Table
 
 
 class AdminPage(APIRouter):
@@ -157,4 +157,16 @@ class AdminPage(APIRouter):
         return self.delete(
             f"/form/{hide_path}{kebab_name}",
             description=description,
+        )
+
+    def area_chart(
+        self,
+        name: str,
+        description: str,
+    ):
+        kebab_name = name.lower().replace(" ", "-")
+        return self.get(
+            f"/area-chart/{kebab_name}",
+            description=description,
+            response_model=AreaChart,
         )
